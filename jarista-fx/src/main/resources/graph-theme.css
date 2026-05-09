@@ -1,0 +1,184 @@
+/* Catppuccin Mocha dark theme for Jarista graph viewer */
+
+.root {
+    -fx-base: #1e1e2e;
+    -fx-background: #1e1e2e;
+}
+
+/* ── toolbar ──────────────────────────────────────────────────── */
+
+.toolbar {
+    -fx-background-color: #181825;
+    -fx-border-color: transparent transparent #313244 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.app-title {
+    -fx-text-fill: #cdd6f4;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+}
+
+.app-subtitle {
+    -fx-text-fill: #6c7086;
+    -fx-font-size: 16;
+}
+
+.stats-ok {
+    -fx-text-fill: #a6e3a1;
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+}
+
+.stats-error {
+    -fx-text-fill: #f38ba8;
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+}
+
+/* ── tree view ────────────────────────────────────────────────── */
+
+.graph-tree {
+    -fx-background-color: #1e1e2e;
+    -fx-border-color: transparent;
+}
+
+.graph-tree .tree-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 4 8 4 4;
+}
+
+.graph-tree .tree-cell:selected {
+    -fx-background-color: #313244;
+}
+
+.graph-tree .tree-cell:selected:focused {
+    -fx-background-color: #45475a;
+}
+
+.graph-tree .tree-cell:hover {
+    -fx-background-color: #28283d;
+}
+
+.graph-tree .tree-disclosure-node .arrow {
+    -fx-background-color: #6c7086;
+}
+
+.graph-tree .tree-cell:selected .tree-disclosure-node .arrow {
+    -fx-background-color: #cdd6f4;
+}
+
+/* ── detail panel ─────────────────────────────────────────────── */
+
+.detail-panel {
+    -fx-background-color: #1e1e2e;
+}
+
+.separator .line {
+    -fx-border-color: #313244;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* ── badges ───────────────────────────────────────────────────── */
+
+.badge {
+    -fx-padding: 4 12;
+    -fx-background-radius: 12;
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+}
+
+.badge-l1 {
+    -fx-background-color: #45283c;
+    -fx-text-fill: #f5c2e7;
+}
+
+.badge-l2 {
+    -fx-background-color: #283045;
+    -fx-text-fill: #89b4fa;
+}
+
+.badge-l3 {
+    -fx-background-color: #28452e;
+    -fx-text-fill: #a6e3a1;
+}
+
+.badge-piece {
+    -fx-background-color: #453d28;
+    -fx-text-fill: #f9e2af;
+}
+
+/* ── code blocks ──────────────────────────────────────────────── */
+
+.code-block {
+    -fx-font-family: "Consolas", "Cascadia Code", monospace;
+    -fx-font-size: 12;
+    -fx-text-fill: #cdd6f4;
+    -fx-control-inner-background: #181825;
+    -fx-background-color: #181825;
+    -fx-border-color: #313244;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 8;
+}
+
+.code-block .content {
+    -fx-background-color: #181825;
+}
+
+/* ── status bar ───────────────────────────────────────────────── */
+
+.status-bar {
+    -fx-background-color: #181825;
+    -fx-border-color: #313244 transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+}
+
+.status-label {
+    -fx-text-fill: #6c7086;
+    -fx-font-size: 12;
+}
+
+/* ── split pane ───────────────────────────────────────────────── */
+
+.split-pane {
+    -fx-background-color: #1e1e2e;
+    -fx-padding: 0;
+}
+
+.split-pane-divider {
+    -fx-background-color: #313244;
+    -fx-padding: 0 1 0 1;
+}
+
+/* ── scroll pane / bars ───────────────────────────────────────── */
+
+.scroll-pane {
+    -fx-background: #1e1e2e;
+    -fx-background-color: #1e1e2e;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #1e1e2e;
+}
+
+.scroll-bar {
+    -fx-background-color: #1e1e2e;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #45475a;
+    -fx-background-radius: 4;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: "";
+    -fx-padding: 0;
+}
