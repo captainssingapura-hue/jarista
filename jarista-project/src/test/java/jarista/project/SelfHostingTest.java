@@ -3,6 +3,8 @@ package jarista.project;
 import jarista.Stateless;
 import jarista.graph.GraphValidator;
 import jarista.graph.Violation;
+import jarista.spec.LoadBearing;
+import jarista.spec.SpecStatus;
 import jarista.project.spec.*;
 import jarista.project.piece.*;
 import org.junit.jupiter.api.Test;
@@ -44,7 +46,9 @@ class SelfHostingTest {
                 UILayer.INSTANCE,
                 CrossTeam.INSTANCE,
                 CodeQuality.INSTANCE,
-                CulturalStudies.INSTANCE
+                CulturalStudies.INSTANCE,
+                ContentManagement.INSTANCE,
+                WorkflowImprovement.INSTANCE
         );
         for (var epic : epics) {
             assertInstanceOf(Stateless.class, epic, epic.getClass().getSimpleName() + " must be Stateless");
@@ -85,6 +89,24 @@ class SelfHostingTest {
     }
 
     @Test
+    void piecesTargetLoadBearingSpecs() {
+        // All 8 pieces target DONE specs — LoadBearingEnforcer validates consistency
+        assertInstanceOf(LoadBearing.class, SpecSkeleton.INSTANCE);
+        assertEquals(SpecStatus.DONE, SpecSkeleton.INSTANCE.status());
+        assertInstanceOf(LoadBearing.class, CycleDetection.INSTANCE);
+        assertEquals(SpecStatus.DONE, CycleDetection.INSTANCE.status());
+    }
+
+    @Test
+    void organizationalSpecsAreNotLoadBearing() {
+        assertFalse(JaristaGoal.INSTANCE instanceof LoadBearing);
+        assertFalse(CoreTypeSystem.INSTANCE instanceof LoadBearing);
+        assertFalse(ContentManagement.INSTANCE instanceof LoadBearing);
+        assertFalse(NanguoAnalogy.INSTANCE instanceof LoadBearing);
+        assertFalse(BaristaIdentity.INSTANCE instanceof LoadBearing);
+    }
+
+    @Test
     void allNodesAreJOntologyImmutable() {
         assertInstanceOf(hue.captains.singapura.tao.ontology.Immutable.class, JaristaGoal.INSTANCE);
         assertInstanceOf(hue.captains.singapura.tao.ontology.Immutable.class, ImplScanner.INSTANCE);
@@ -92,11 +114,11 @@ class SelfHostingTest {
 
     @Test
     void specCount() {
-        // 1 L1 + 9 L2 + 34 L3 + 3 L4 = 47 specs
+        // 1 L1 + 11 L2 + 51 L3 + 8 L4 = 71 specs
         // 8 L1 pieces
-        // Total: 55 Stateless nodes in the project graph
+        // Total: 79 Stateless nodes in the project graph
         var validator = new GraphValidator();
         List<Violation> violations = validator.validate("jarista.project");
-        assertEquals(0, violations.size(), "All 55 nodes should pass validation");
+        assertEquals(0, violations.size(), "All 77 nodes should pass validation");
     }
 }

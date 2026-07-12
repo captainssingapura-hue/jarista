@@ -1,6 +1,7 @@
 package jarista.fx;
 
 import jarista.detail.RoledDetail;
+import jarista.spec.SpecStatus;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ public record NodeInfo(
         String fullName,
         int specLevel,          // 1–18 for specs, 0 for pieces
         boolean piece,
+        boolean loadBearing,    // true for leaf specs implementing LoadBearing
+        SpecStatus status,      // declared status for load-bearing, derived for organizational, null for pieces
         List<String> dependencies,
         List<RoledDetail> details
 ) {

@@ -4,11 +4,12 @@ package jarista.detail;
  * A typed content block — purely about <em>what</em> the content is,
  * not <em>why</em> it exists (that's {@link DetailRole}).
  *
- * <p>Four variants:
+ * <p>Five variants:
  * <ul>
  *   <li>{@link Text}     — prose, rendered as-is.</li>
  *   <li>{@link Code}     — source code with a language tag.</li>
- *   <li>{@link Html}     — inline HTML/SVG, rendered via a web view.</li>
+ *   <li>{@link Html}     — inline HTML, rendered via a web view.</li>
+ *   <li>{@link Svg}      — inline SVG markup, a first-class visual type.</li>
  *   <li>{@link Resource} — reference to a static file (.md, .svg, .png, …).</li>
  * </ul>
  */
@@ -20,8 +21,11 @@ public sealed interface Detail {
     /** Inline source code with a language tag for syntax highlighting. */
     record Code(String language, String content) implements Detail {}
 
-    /** Inline HTML content — rendered via WebView. Supports SVG, styled markup, etc. */
+    /** Inline HTML content — rendered via WebView. */
     record Html(String content) implements Detail {}
+
+    /** Inline SVG content — a dedicated visual type, not HTML-that-happens-to-contain-SVG. */
+    record Svg(String content) implements Detail {}
 
     /** Reference to a static resource on the classpath or project tree. */
     record Resource(String path, ResourceType type) implements Detail {}

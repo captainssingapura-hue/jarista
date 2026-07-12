@@ -1,0 +1,63 @@
+<svg viewBox='0 0 520 320' xmlns='http://www.w3.org/2000/svg'>
+  <rect x='0' y='0' width='520' height='320' rx='12' fill='#1a1a2e'/>
+  <rect x='15' y='250' width='490' height='55' rx='8' fill='#2d2040'/>
+  <text x='260' y='280' text-anchor='middle' fill='#6c7086' font-size='10' font-family='sans-serif'>&#x1f3a8; Studio Floor &#x1f3a8;</text>
+
+  <!-- Left painter: Markdown fan -->
+  <g transform='translate(95,140)'>
+    <circle cx='0' cy='0' r='24' fill='#89b4fa'/>
+    <text x='0' y='7' text-anchor='middle' font-size='20'>&#x1f624;</text>
+    <text x='0' y='38' text-anchor='middle' fill='#89b4fa' font-size='11' font-weight='bold' font-family='sans-serif'>Team MD</text>
+    <line x1='18' y1='-15' x2='45' y2='-45' stroke='#a6adc8' stroke-width='3' stroke-linecap='round'/>
+    <rect x='40' y='-58' width='14' height='18' rx='2' fill='#89b4fa'/>
+  </g>
+  <g transform='translate(95,60)'>
+    <rect x='-55' y='-22' width='110' height='36' rx='8' fill='#313244'/>
+    <polygon points='-5,14 5,14 0,24' fill='#313244'/>
+    <text x='0' y='-4' text-anchor='middle' fill='#89b4fa' font-size='11' font-weight='bold' font-family='sans-serif'>"# is elegant!"</text>
+    <text x='0' y='9' text-anchor='middle' fill='#7f849c' font-size='9' font-family='sans-serif'>Human-readable!</text>
+  </g>
+
+  <!-- Right painter: HTML fan -->
+  <g transform='translate(370,140)'>
+    <circle cx='0' cy='0' r='24' fill='#f38ba8'/>
+    <text x='0' y='7' text-anchor='middle' font-size='20'>&#x1f624;</text>
+    <text x='0' y='38' text-anchor='middle' fill='#f38ba8' font-size='11' font-weight='bold' font-family='sans-serif'>Team HTML</text>
+    <line x1='-18' y1='-15' x2='-45' y2='-45' stroke='#a6adc8' stroke-width='3' stroke-linecap='round'/>
+    <rect x='-54' y='-58' width='14' height='18' rx='2' fill='#f38ba8'/>
+  </g>
+  <g transform='translate(370,60)'>
+    <rect x='-58' y='-22' width='116' height='36' rx='8' fill='#313244'/>
+    <polygon points='-5,14 5,14 0,24' fill='#313244'/>
+    <text x='0' y='-4' text-anchor='middle' fill='#f38ba8' font-size='11' font-weight='bold' font-family='sans-serif'>"&lt;p&gt; is semantic!"</text>
+    <text x='0' y='9' text-anchor='middle' fill='#7f849c' font-size='9' font-family='sans-serif'>Structured!</text>
+  </g>
+
+  <!-- Argument sparks -->
+  <text x='230' y='125' text-anchor='middle' fill='#f9e2af' font-size='16'>&#x26a1;</text>
+  <text x='240' y='145' text-anchor='middle' fill='#f9e2af' font-size='14'>&#x1f4a5;</text>
+  <text x='250' y='130' text-anchor='middle' fill='#f9e2af' font-size='12'>&#x26a1;</text>
+
+  <!-- The Canvas — confused -->
+  <g transform='translate(230,200)'>
+    <line x1='-25' y1='20' x2='-35' y2='52' stroke='#585b70' stroke-width='2'/>
+    <line x1='25' y1='20' x2='35' y2='52' stroke='#585b70' stroke-width='2'/>
+    <line x1='0' y1='20' x2='0' y2='55' stroke='#585b70' stroke-width='2'/>
+    <rect x='-30' y='-30' width='60' height='50' rx='3' fill='#45475a' stroke='#585b70' stroke-width='1'/>
+    <text x='0' y='-5' text-anchor='middle' font-size='18'>&#x1f636;</text>
+    <text x='0' y='12' text-anchor='middle' fill='#f9e2af' font-size='7' font-family='sans-serif'>...but what AM I?</text>
+  </g>
+
+  <!-- Jarista figure — quietly painting with types -->
+  <g transform='translate(460,185)'>
+    <circle cx='0' cy='0' r='20' fill='#a6e3a1'/>
+    <text x='0' y='6' text-anchor='middle' font-size='16'>&#x2615;</text>
+    <text x='0' y='30' text-anchor='middle' fill='#a6e3a1' font-size='9' font-weight='bold' font-family='sans-serif'>Jarista</text>
+    <rect x='-42' y='-18' width='20' height='16' rx='2' fill='#1e1e2e' stroke='#a6e3a1' stroke-width='1'/>
+    <text x='-32' y='-6' text-anchor='middle' fill='#a6e3a1' font-size='6' font-family='monospace'>Text</text>
+    <text x='-32' y='1' text-anchor='middle' fill='#a6e3a1' font-size='6' font-family='monospace'>Code</text>
+  </g>
+
+  <!-- Bottom label -->
+  <text x='260' y='305' text-anchor='middle' fill='#6c7086' font-size='10' font-family='sans-serif'>They argued about brushes. The canvas still didn't know what it was.</text>
+</svg>

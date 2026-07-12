@@ -31,7 +31,7 @@ class GraphModelTest {
         long epics = model.root().children().stream()
                 .filter(c -> !c.isPiece() && c.specLevel() == 2)
                 .count();
-        assertEquals(9, epics, "Expected 9 L2 epics");
+        assertEquals(11, epics, "Expected 11 L2 epics");
     }
 
     @Test
@@ -66,7 +66,7 @@ class GraphModelTest {
 
     @Test
     void totalNodeCount() {
-        assertEquals(55, model.totalNodes(), "47 specs + 8 pieces = 55");
+        assertEquals(79, model.totalNodes(), "71 specs + 8 pieces = 79");
     }
 
     @Test

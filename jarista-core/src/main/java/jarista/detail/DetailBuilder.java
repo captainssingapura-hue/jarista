@@ -35,14 +35,24 @@ public final class DetailBuilder {
         return new CodeBlock(language);
     }
 
-    /** Start building inline HTML/SVG content. */
+    /** Start building inline HTML content. */
     public HtmlBlock html() {
         return new HtmlBlock();
+    }
+
+    /** Start building inline SVG content. */
+    public SvgBlock svg() {
+        return new SvgBlock();
     }
 
     /** Start building a resource reference. */
     public ResourceRef resource(String path, ResourceType type) {
         return new ResourceRef(path, type);
+    }
+
+    /** Shortcut: SVG resource reference. */
+    public ResourceRef svg(String path) {
+        return new ResourceRef(path, ResourceType.SVG);
     }
 
     // ── inner block builders ─────────────────────────────────────
@@ -92,6 +102,21 @@ public final class DetailBuilder {
         /** Tag this HTML block with a role, producing a {@link RoledDetail}. */
         public RoledDetail as(DetailRole role) {
             return new RoledDetail(role, new Detail.Html(sb.toString()));
+        }
+    }
+
+    public static final class SvgBlock {
+        private final StringBuilder sb = new StringBuilder();
+
+        public SvgBlock ln(String line) {
+            if (!sb.isEmpty()) sb.append('\n');
+            sb.append(line);
+            return this;
+        }
+
+        /** Tag this SVG block with a role, producing a {@link RoledDetail}. */
+        public RoledDetail as(DetailRole role) {
+            return new RoledDetail(role, new Detail.Svg(sb.toString()));
         }
     }
 
