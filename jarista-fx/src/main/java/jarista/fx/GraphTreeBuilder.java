@@ -4,6 +4,8 @@ import jarista.Stateless;
 import jarista.detail.RoledDetail;
 import jarista.graph.GraphScanner;
 import jarista.graph.GraphValidator;
+import jarista.spec.LoadBearing;
+import jarista.spec.SpecStatus;
 import javafx.scene.control.TreeItem;
 
 import java.lang.reflect.*;
@@ -47,9 +49,14 @@ public final class GraphTreeBuilder {
             boolean isPiece = pLevel > 0;
             if (isPiece) pieces++; else specs++;
 
+            Stateless instance = getInstance(cls);
+            boolean isLoadBearing = instance instanceof LoadBearing;
+            SpecStatus declaredStatus = (instance instanceof LoadBearing lb) ? lb.status() : null;
+
             var info = new NodeInfo(
                     cls.getSimpleName(), cls.getName(),
                     isPiece ? 0 : sLevel, isPiece,
+                    isLoadBearing, isPiece ? null : declaredStatus,
                     readDependencies(cls), readDetails(cls));
 
             var item = new TreeItem<>(info);
@@ -71,6 +78,9 @@ public final class GraphTreeBuilder {
                 parent.getChildren().add(child);
             }
         }
+
+        // derive status for organizational (non-LoadBearing) specs
+        deriveOrganizationalStatus(itemMap);
 
         // sort: specs first (by name), then pieces (by name)
         for (var item : itemMap.values()) {
@@ -154,6 +164,59 @@ public final class GraphTreeBuilder {
             return instance.details();
         } catch (Exception e) {
             return List.of();
+        }
+    }
+
+    /**
+     * Derives indicative status for organizational (non-LoadBearing) specs
+     * by rolling up descendant leaves. Bottom-up: process deepest first.
+     *
+     * <p>Indicative only — software is a living organism; even DONE leaves
+     * may grow new sub-features later.
+     */
+    private static void deriveOrganizationalStatus(Map<Class<?>, TreeItem<NodeInfo>> itemMap) {
+        for (var item : itemMap.values()) {
+            NodeInfo info = item.getValue();
+            if (info.piece() || info.loadBearing() || info.status() != null) continue;
+
+            SpecStatus derived = deriveFromChildren(item);
+            if (derived != null) {
+                // rebuild NodeInfo with derived status
+                var updated = new NodeInfo(
+                        info.name(), info.fullName(), info.specLevel(),
+                        info.piece(), info.loadBearing(), derived,
+                        info.dependencies(), info.details());
+                item.setValue(updated);
+            }
+        }
+    }
+
+    /**
+     * Collects leaf statuses from all spec descendants (skipping pieces).
+     * Returns null if no leaf descendants found.
+     */
+    private static SpecStatus deriveFromChildren(TreeItem<NodeInfo> item) {
+        var leafStatuses = new ArrayList<SpecStatus>();
+        collectLeafStatuses(item, leafStatuses);
+        if (leafStatuses.isEmpty()) return null;
+
+        boolean allDone = leafStatuses.stream().allMatch(s -> s == SpecStatus.DONE);
+        boolean anyActive = leafStatuses.stream().anyMatch(s -> s != SpecStatus.PLANNED);
+
+        if (allDone) return SpecStatus.DONE;
+        if (anyActive) return SpecStatus.IN_PROGRESS;
+        return SpecStatus.PLANNED;
+    }
+
+    private static void collectLeafStatuses(TreeItem<NodeInfo> item, List<SpecStatus> out) {
+        for (var child : item.getChildren()) {
+            NodeInfo ci = child.getValue();
+            if (ci.piece()) continue;
+            if (ci.loadBearing() && ci.status() != null) {
+                out.add(ci.status());
+            } else {
+                collectLeafStatuses(child, out);
+            }
         }
     }
 }

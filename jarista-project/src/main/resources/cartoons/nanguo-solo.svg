@@ -1,0 +1,72 @@
+<svg viewBox='0 0 760 280' xmlns='http://www.w3.org/2000/svg'>
+  <!-- Background -->
+  <rect x='0' y='0' width='760' height='280' rx='12' fill='#1a1a2e'/>
+
+  <!-- Title strip -->
+  <rect x='0' y='0' width='760' height='36' rx='12' fill='#181825'/>
+  <text x='380' y='24' text-anchor='middle' fill='#f9e2af' font-size='13' font-weight='bold' font-family='sans-serif'>&#x7ed3;&#x56fe;&#x4e3a;&#x8c31;&#xff0c;&#x5357;&#x90ed;&#x7acb;&#x73b0; &#x2014; Weave the graph into a score, and the pretender is revealed</text>
+
+  <!-- Stage floor -->
+  <rect x='30' y='205' width='700' height='50' rx='8' fill='#2d2040'/>
+  <text x='380' y='237' text-anchor='middle' fill='#6c7086' font-size='11' font-family='sans-serif'>&#x1f3b5; Stage &#x1f3b5;</text>
+
+  <!-- Spotlight on Nanguo -->
+  <ellipse cx='580' cy='200' rx='70' ry='10' fill='#f9e2af' opacity='0.13'/>
+  <polygon points='520,36 640,36 650,200 510,200' fill='#f9e2af' opacity='0.05'/>
+
+  <!-- King demanding solo (top center-right) -->
+  <g transform='translate(440,65)'>
+    <rect x='-70' y='-22' width='140' height='38' rx='8' fill='#45475a'/>
+    <text x='0' y='3' text-anchor='middle' fill='#f9e2af' font-size='13' font-family='sans-serif'>&#x1f451; King Min: "Solo!"</text>
+  </g>
+
+  <!-- Orchestra group — spread across the left -->
+  <g transform='translate(80,120)'>
+    <circle cx='0' cy='0' r='20' fill='#89b4fa'/>
+    <text x='0' y='6' text-anchor='middle' font-size='17'>&#x1f3b5;</text>
+    <text x='0' y='32' text-anchor='middle' fill='#a6e3a1' font-size='10' font-family='sans-serif'>Playing</text>
+  </g>
+  <g transform='translate(150,108)'>
+    <circle cx='0' cy='0' r='20' fill='#89b4fa'/>
+    <text x='0' y='6' text-anchor='middle' font-size='17'>&#x1f3b5;</text>
+  </g>
+  <g transform='translate(220,125)'>
+    <circle cx='0' cy='0' r='20' fill='#89b4fa'/>
+    <text x='0' y='6' text-anchor='middle' font-size='17'>&#x1f3b5;</text>
+  </g>
+  <g transform='translate(290,115)'>
+    <circle cx='0' cy='0' r='20' fill='#89b4fa'/>
+    <text x='0' y='6' text-anchor='middle' font-size='17'>&#x1f3b5;</text>
+  </g>
+  <g transform='translate(115,165)'>
+    <circle cx='0' cy='0' r='20' fill='#89b4fa'/>
+    <text x='0' y='6' text-anchor='middle' font-size='17'>&#x1f3b5;</text>
+  </g>
+  <g transform='translate(190,170)'>
+    <circle cx='0' cy='0' r='20' fill='#89b4fa'/>
+    <text x='0' y='6' text-anchor='middle' font-size='17'>&#x1f3b5;</text>
+  </g>
+  <g transform='translate(260,168)'>
+    <circle cx='0' cy='0' r='20' fill='#89b4fa'/>
+    <text x='0' y='6' text-anchor='middle' font-size='17'>&#x1f3b5;</text>
+  </g>
+
+  <!-- Divider — visual separation -->
+  <line x1='400' y1='50' x2='400' y2='200' stroke='#313244' stroke-width='1' stroke-dasharray='4,4' opacity='0.5'/>
+
+  <!-- Nanguo — in the spotlight, exposed -->
+  <g transform='translate(580,130)'>
+    <circle cx='0' cy='0' r='26' fill='#f38ba8' stroke='#f9e2af' stroke-width='2.5'/>
+    <text x='0' y='7' text-anchor='middle' font-size='22'>&#x1f630;</text>
+    <text x='0' y='40' text-anchor='middle' fill='#f38ba8' font-size='13' font-weight='bold' font-family='sans-serif'>&#x5357;&#x90ed;</text>
+    <text x='0' y='56' text-anchor='middle' fill='#f38ba8' font-size='10' font-family='sans-serif'>No sound!</text>
+  </g>
+
+  <!-- Flee arrow -->
+  <path d='M610,118 Q660,80 700,55' stroke='#f38ba8' stroke-width='2' fill='none' stroke-dasharray='5,4'/>
+  <polygon points='700,50 705,63 693,60' fill='#f38ba8'/>
+  <text x='710' y='52' fill='#f38ba8' font-size='11' font-weight='bold' font-family='sans-serif'>flee!</text>
+
+  <!-- Bottom caption -->
+  <text x='380' y='270' text-anchor='middle' fill='#6c7086' font-size='11' font-family='sans-serif'>The ensemble hid the faker. The solo exposed him.</text>
+</svg>

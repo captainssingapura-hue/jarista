@@ -3,6 +3,8 @@ package jarista.project.spec;
 import jarista.detail.DetailBuilder;
 import jarista.detail.RoledDetail;
 import jarista.spec.L3_Spec;
+import jarista.spec.LoadBearing;
+import jarista.spec.SpecStatus;
 
 import java.util.List;
 
@@ -10,8 +12,9 @@ import static jarista.detail.DetailRole.*;
 import static jarista.detail.ResourceType.MARKDOWN;
 
 /** L3 — Search and filter nodes in the tree by name, level, or type. */
-public class SearchFilter implements L3_Spec<UILayer> {
+public class SearchFilter implements L3_Spec<UILayer>, LoadBearing {
     public static final SearchFilter INSTANCE = new SearchFilter();
+    @Override public SpecStatus status() { return SpecStatus.PLANNED; }
 
     private static final DetailBuilder _db = new DetailBuilder();
 

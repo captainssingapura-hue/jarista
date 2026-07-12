@@ -28,8 +28,8 @@ class GraphTreeBuilderTest {
 
     @Test
     void counts() {
-        assertEquals(55, builder.totalNodes());
-        assertEquals(47, builder.specCount());
+        assertEquals(79, builder.totalNodes());
+        assertEquals(71, builder.specCount());
         assertEquals(8, builder.pieceCount());
         assertEquals(0, builder.violationCount());
     }
@@ -39,7 +39,7 @@ class GraphTreeBuilderTest {
         long epics = builder.rootItem().getChildren().stream()
                 .filter(c -> !c.getValue().piece() && c.getValue().specLevel() == 2)
                 .count();
-        assertEquals(9, epics);
+        assertEquals(11, epics);
     }
 
     @Test

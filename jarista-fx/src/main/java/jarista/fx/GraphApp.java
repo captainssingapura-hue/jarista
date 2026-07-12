@@ -3,6 +3,7 @@ package jarista.fx;
 import jarista.detail.Detail;
 import jarista.detail.DetailRole;
 import jarista.detail.RoledDetail;
+import jarista.spec.SpecStatus;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -31,6 +33,7 @@ public class GraphApp extends Application {
     static final String GREEN  = "#a6e3a1";
     static final String YELLOW = "#f9e2af";
     static final String RED    = "#f38ba8";
+    static final String PEACH  = "#fab387";
     static final String TEXT   = "#cdd6f4";
     static final String SUB    = "#a6adc8";
     static final String MUTED  = "#6c7086";
@@ -123,6 +126,12 @@ public class GraphApp extends Application {
                             + " -fx-font-size: 14;");
                 icon.setMinWidth(18);
 
+                // status dot: ● for load-bearing, ◌ for derived organizational
+                Circle statusDot = new Circle(4);
+                statusDot.setStyle("-fx-fill: " + statusColor(item) + ";");
+                statusDot.setVisible(item.status() != null);
+                statusDot.setManaged(item.status() != null);
+
                 Label name = new Label(item.name());
                 name.setStyle("-fx-text-fill: " + TEXT + ";"
                         + (!item.piece() && item.specLevel() <= 2
@@ -134,7 +143,7 @@ public class GraphApp extends Application {
                 Label tag = new Label(item.levelTag());
                 tag.setStyle("-fx-text-fill: " + MUTED + "; -fx-font-size: 11;");
 
-                HBox row = new HBox(6, icon, name, spacer, tag);
+                HBox row = new HBox(6, icon, statusDot, name, spacer, tag);
                 row.setAlignment(Pos.CENTER_LEFT);
                 row.prefWidthProperty().bind(
                         tv.widthProperty().subtract(getTreeItemLevel(getTreeItem()) * 18 + 30));
@@ -278,6 +287,13 @@ public class GraphApp extends Application {
                          + " -fx-font-size: 12; -fx-font-style: italic;");
                 yield l;
             }
+            case Detail.Svg(var content) -> {
+                int lines = content.split("\n").length;
+                Label l = new Label("🎨 SVG graphic (" + lines + " lines) — open in web UI to view");
+                l.setStyle("-fx-text-fill: " + MUTED + "; -fx-padding: 2 0 4 14;"
+                         + " -fx-font-size: 12; -fx-font-style: italic;");
+                yield l;
+            }
             case Detail.Resource(var path, var type) -> {
                 Label l = new Label("📎 " + path + "  [" + type + "]");
                 l.setStyle("-fx-text-fill: " + BLUE + "; -fx-padding: 2 0 4 14;"
@@ -340,6 +356,15 @@ public class GraphApp extends Application {
             case 1  -> PINK;
             case 2  -> BLUE;
             default -> GREEN;
+        };
+    }
+
+    static String statusColor(NodeInfo info) {
+        if (info.status() == null) return MUTED;
+        return switch (info.status()) {
+            case DONE        -> GREEN;
+            case IN_PROGRESS -> PEACH;
+            case PLANNED     -> MUTED;
         };
     }
 

@@ -1,0 +1,36 @@
+<svg viewBox='0 0 480 200' xmlns='http://www.w3.org/2000/svg'>
+  <rect x='0' y='0' width='480' height='200' rx='12' fill='#1a1a2e'/>
+  <g transform='translate(60,80)'>
+    <ellipse cx='0' cy='0' rx='35' ry='28' fill='#3d2d20'/>
+    <text x='0' y='-2' text-anchor='middle' font-size='20'>&#x2615;</text>
+    <text x='0' y='18' text-anchor='middle' fill='#a6adc8' font-size='8' font-family='sans-serif'>raw .java</text>
+    <text x='0' y='45' text-anchor='middle' fill='#6c7086' font-size='10' font-family='sans-serif'>Beans</text>
+  </g>
+  <line x1='100' y1='80' x2='140' y2='80' stroke='#8b7355' stroke-width='2'/>
+  <polygon points='140,75 150,80 140,85' fill='#8b7355'/>
+  <g transform='translate(190,80)'>
+    <rect x='-30' y='-25' width='60' height='50' rx='8' fill='#453d28'/>
+    <text x='0' y='-2' text-anchor='middle' font-size='18'>&#x2699;&#xfe0f;</text>
+    <text x='0' y='16' text-anchor='middle' fill='#f9e2af' font-size='8' font-family='sans-serif'>scan</text>
+    <text x='0' y='45' text-anchor='middle' fill='#6c7086' font-size='10' font-family='sans-serif'>Grind</text>
+  </g>
+  <line x1='225' y1='80' x2='265' y2='80' stroke='#8b7355' stroke-width='2'/>
+  <polygon points='265,75 275,80 265,85' fill='#8b7355'/>
+  <g transform='translate(315,80)'>
+    <rect x='-30' y='-25' width='60' height='50' rx='8' fill='#28452e'/>
+    <text x='0' y='-2' text-anchor='middle' font-size='18'>&#x1f525;</text>
+    <text x='0' y='16' text-anchor='middle' fill='#a6e3a1' font-size='8' font-family='sans-serif'>validate</text>
+    <text x='0' y='45' text-anchor='middle' fill='#6c7086' font-size='10' font-family='sans-serif'>Brew</text>
+  </g>
+  <line x1='350' y1='80' x2='390' y2='80' stroke='#8b7355' stroke-width='2'/>
+  <polygon points='390,75 400,80 390,85' fill='#8b7355'/>
+  <g transform='translate(430,80)'>
+    <circle cx='0' cy='-8' r='12' fill='#d4b896'/>
+    <circle cx='-14' cy='12' r='9' fill='#d4b896'/>
+    <circle cx='14' cy='12' r='9' fill='#d4b896'/>
+    <line x1='0' y1='4' x2='-14' y2='3' stroke='#8b7355' stroke-width='1.5'/>
+    <line x1='0' y1='4' x2='14' y2='3' stroke='#8b7355' stroke-width='1.5'/>
+    <text x='0' y='45' text-anchor='middle' fill='#6c7086' font-size='10' font-family='sans-serif'>Serve</text>
+  </g>
+  <text x='240' y='175' text-anchor='middle' fill='#a6adc8' font-size='11' font-family='sans-serif'>Beans &#x2192; Grind &#x2192; Brew &#x2192; Serve: from raw classes to validated graph</text>
+</svg>
