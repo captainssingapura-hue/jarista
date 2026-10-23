@@ -18,17 +18,31 @@ class GraphModelTest {
         model.scan();
     }
 
+    /** The L1 goal, sole child of the L0 vision root. */
+    private static NodeView goal() {
+        return model.root().children().stream()
+                .filter(c -> "JaristaGoal".equals(c.name()))
+                .findFirst().orElseThrow();
+    }
+
     @Test
-    void rootIsJaristaGoal() {
+    void rootIsJaristaVision() {
         assertNotNull(model.root());
-        assertEquals("JaristaGoal", model.root().name());
-        assertEquals(1, model.root().specLevel());
+        assertEquals("JaristaVision", model.root().name());
+        assertEquals(0, model.root().specLevel());
         assertFalse(model.root().isPiece());
     }
 
     @Test
-    void sevenEpicsUnderRoot() {
-        long epics = model.root().children().stream()
+    void goalIsSoleChildOfRoot() {
+        assertEquals(1, model.root().children().size());
+        assertEquals("JaristaGoal", goal().name());
+        assertEquals(1, goal().specLevel());
+    }
+
+    @Test
+    void sevenEpicsUnderGoal() {
+        long epics = goal().children().stream()
                 .filter(c -> !c.isPiece() && c.specLevel() == 2)
                 .count();
         assertEquals(11, epics, "Expected 11 L2 epics");
@@ -36,7 +50,7 @@ class GraphModelTest {
 
     @Test
     void coreTypeSystemHasFiveFeatures() {
-        NodeView cts = model.root().children().stream()
+        NodeView cts = goal().children().stream()
                 .filter(c -> "CoreTypeSystem".equals(c.name()))
                 .findFirst().orElseThrow();
 
@@ -49,7 +63,7 @@ class GraphModelTest {
     @Test
     void piecesAttachToSpecs() {
         // SpecSkeleton should have ImplSpecSkeleton as a child piece
-        NodeView cts = model.root().children().stream()
+        NodeView cts = goal().children().stream()
                 .filter(c -> "CoreTypeSystem".equals(c.name()))
                 .findFirst().orElseThrow();
         NodeView specSkel = cts.children().stream()
@@ -66,7 +80,7 @@ class GraphModelTest {
 
     @Test
     void totalNodeCount() {
-        assertEquals(79, model.totalNodes(), "71 specs + 8 pieces = 79");
+        assertEquals(80, model.totalNodes(), "72 specs + 8 pieces = 80");
     }
 
     @Test
@@ -77,7 +91,7 @@ class GraphModelTest {
     @Test
     void dependenciesPopulated() {
         // BuildIntegration should list CoreTypeSystem and GraphValidation as deps
-        NodeView bi = model.root().children().stream()
+        NodeView bi = goal().children().stream()
                 .filter(c -> "BuildIntegration".equals(c.name()))
                 .findFirst().orElseThrow();
         assertTrue(bi.dependencyNames().contains("CoreTypeSystem"),
@@ -88,9 +102,10 @@ class GraphModelTest {
 
     @Test
     void levelTags() {
-        assertEquals("L1", model.root().levelTag());
+        assertEquals("L0", model.root().levelTag());
+        assertEquals("L1", goal().levelTag());
 
-        NodeView l2 = model.root().children().stream()
+        NodeView l2 = goal().children().stream()
                 .filter(c -> c.specLevel() == 2).findFirst().orElseThrow();
         assertEquals("L2", l2.levelTag());
     }

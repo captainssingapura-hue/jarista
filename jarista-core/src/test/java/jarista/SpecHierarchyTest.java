@@ -3,6 +3,7 @@ package jarista;
 import jarista.annotation.ForFeature;
 import jarista.piece.L1_Piece;
 import jarista.piece.L2_Piece;
+import jarista.spec.L0_Spec;
 import jarista.spec.L1_Spec;
 import jarista.spec.L2_Spec;
 import jarista.spec.L3_Spec;
@@ -16,7 +17,11 @@ class SpecHierarchyTest {
 
     // ── Sample spec graph ──
 
-    static class ProjectGoal implements L1_Spec {
+    static class Vision implements L0_Spec {
+        public static final Vision INSTANCE = new Vision();
+    }
+
+    static class ProjectGoal implements L1_Spec<Vision> {
         public static final ProjectGoal INSTANCE = new ProjectGoal();
     }
 

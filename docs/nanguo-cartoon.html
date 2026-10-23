@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>滥竽充数 — The SDLC Orchestra</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Noto+Sans+JP:wght@400;700&family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0f0f1a;
+    color: #e0e0e0;
+    font-family: 'Patrick Hand', cursive;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .title-card {
+    text-align: center;
+    padding: 80px 20px 20px;
+  }
+
+  .title-card h1 {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 4em;
+    color: #e74c3c;
+    text-shadow: 3px 3px 0 #1a0a0a;
+    margin-bottom: 5px;
+  }
+
+  .title-card .subtitle {
+    font-size: 1.5em;
+    color: #a8a8c8;
+  }
+
+  .title-card .era {
+    font-size: 1em;
+    color: #666;
+    margin-top: 8px;
+  }
+
+  .panels {
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .panel {
+    background: #141428;
+    border-radius: 20px;
+    margin: 50px 0;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    border: 3px solid #2a2a4a;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .panel.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .panel-number {
+    background: #e74c3c;
+    color: white;
+    display: inline-block;
+    padding: 8px 24px;
+    border-radius: 0 0 12px 0;
+    font-size: 1.1em;
+    font-weight: bold;
+  }
+
+  .panel svg { width: 100%; display: block; }
+
+  .panel-caption {
+    padding: 24px 32px;
+    font-size: 1.35em;
+    line-height: 1.6;
+    color: #d0d0e8;
+  }
+
+  .panel-caption em {
+    color: #f8b400;
+    font-style: normal;
+  }
+
+  .panel-caption .red {
+    color: #e74c3c;
+  }
+
+  .panel-caption .zh {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 0.95em;
+    color: #c0a060;
+    display: block;
+    margin-top: 10px;
+    line-height: 1.8;
+  }
+
+  .panel-caption .jp {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.85em;
+    color: #8888aa;
+    display: block;
+    margin-top: 6px;
+  }
+
+  .divider {
+    text-align: center;
+    padding: 40px;
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 2em;
+    color: #e74c3c;
+    opacity: 0.3;
+  }
+
+  .finale {
+    text-align: center;
+    padding: 60px 20px 120px;
+  }
+
+  .finale .main {
+    font-size: 1.8em;
+    color: #f8b400;
+    margin-bottom: 15px;
+  }
+
+  .finale .zh {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 1.6em;
+    color: #e74c3c;
+    opacity: 0.6;
+  }
+
+  .finale .sig {
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #444;
+  }
+
+  /* mimer animation removed — CSS transform overrides SVG transform attribute */
+
+  /* ── PRINT / PDF EXPORT ── */
+  @media print {
+    body {
+      background: #0f0f1a;
+      padding: 0;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .title-card {
+      page-break-after: always;
+      padding-top: 200px;
+    }
+
+    .panel {
+      opacity: 1 !important;
+      transform: none !important;
+      page-break-before: always;
+      page-break-inside: avoid;
+      margin: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .divider {
+      page-break-before: always;
+      page-break-after: always;
+      padding-top: 200px;
+    }
+
+    .finale {
+      page-break-before: always;
+      padding-top: 200px;
+    }
+
+    .panels {
+      max-width: 100%;
+      padding: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="title-card">
+  <h1>滥竽充数</h1>
+  <div class="subtitle">Padding the Ensemble with Fakes</div>
+  <div class="era">齐宣王 → Modern SDLC</div>
+</div>
+
+<div class="panels">
+
+  <!-- Panel 1: The Ancient Ensemble -->
+  <div class="panel">
+    <div class="panel-number">一</div>
+    <svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="palace-bg" cx="50%" cy="30%">
+          <stop offset="0%" stop-color="#2a1a0a"/>
+          <stop offset="100%" stop-color="#0f0f1a"/>
+        </radialGradient>
+      </defs>
+      <rect width="900" height="420" fill="url(#palace-bg)"/>
+
+      <!-- Palace pillars -->
+      <rect x="50" y="20" width="30" height="400" fill="#8B0000" opacity="0.3" rx="4"/>
+      <rect x="820" y="20" width="30" height="400" fill="#8B0000" opacity="0.3" rx="4"/>
+
+      <!-- King on throne -->
+      <g transform="translate(450, 60)">
+        <!-- Throne -->
+        <rect x="-45" y="20" width="90" height="80" rx="8" fill="#8B6914"/>
+        <rect x="-55" y="15" width="110" height="15" rx="5" fill="#DAA520"/>
+        <!-- King -->
+        <circle cx="0" cy="-5" r="22" fill="#ffd5b4"/>
+        <!-- Crown -->
+        <rect x="-18" y="-30" width="36" height="15" rx="3" fill="#DAA520"/>
+        <circle cx="-10" cy="-32" r="4" fill="#e74c3c"/>
+        <circle cx="0" cy="-35" r="4" fill="#e74c3c"/>
+        <circle cx="10" cy="-32" r="4" fill="#e74c3c"/>
+        <!-- Happy face — loves ensemble -->
+        <path d="M-8,-8 Q-5,-12 -2,-8" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+        <path d="M2,-8 Q5,-12 8,-8" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+        <path d="M-8,5 Q0,14 8,5" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+        <!-- Royal robe -->
+        <rect x="-25" y="18" width="50" height="45" rx="6" fill="#DAA520"/>
+        <!-- Speech bubble -->
+        <ellipse cx="80" cy="-15" rx="65" ry="25" fill="white" opacity="0.1"/>
+        <text x="80" y="-18" text-anchor="middle" fill="#DAA520" font-size="12" font-family="Patrick Hand">I want ALL 300</text>
+        <text x="80" y="-4" text-anchor="middle" fill="#DAA520" font-size="12" font-family="Patrick Hand">playing together!</text>
+      </g>
+
+      <!-- Row of musicians -->
+      <!-- Real musician 1 -->
+      <g transform="translate(120, 220)">
+        <circle cx="0" cy="0" r="16" fill="#ffd5b4"/>
+        <rect x="-14" y="18" width="28" height="35" rx="5" fill="#2c3e50"/>
+        <!-- Playing instrument - effort showing -->
+        <circle cx="-5" cy="-2" r="2" fill="#333"/>
+        <circle cx="5" cy="-2" r="2" fill="#333"/>
+        <path d="M-4,8 Q0,4 4,8" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Instrument -->
+        <rect x="14" y="-5" width="25" height="12" rx="4" fill="#CD853F"/>
+        <circle cx="42" cy="1" r="8" fill="#CD853F"/>
+        <!-- Musical notes -->
+        <text x="50" y="-15" fill="#2ecc71" font-size="14" opacity="0.6">♪</text>
+      </g>
+
+      <!-- Real musician 2 -->
+      <g transform="translate(210, 230)">
+        <circle cx="0" cy="0" r="16" fill="#ffd5b4"/>
+        <rect x="-14" y="18" width="28" height="35" rx="5" fill="#2c3e50"/>
+        <circle cx="-5" cy="-2" r="2" fill="#333"/>
+        <circle cx="5" cy="-2" r="2" fill="#333"/>
+        <path d="M-4,8 Q0,4 4,8" fill="none" stroke="#333" stroke-width="1.5"/>
+        <rect x="14" y="-5" width="25" height="12" rx="4" fill="#CD853F"/>
+        <circle cx="42" cy="1" r="8" fill="#CD853F"/>
+        <text x="50" y="-15" fill="#2ecc71" font-size="14" opacity="0.6">♫</text>
+      </g>
+
+      <!-- 南郭先生 — THE FAKER — highlighted -->
+      <g transform="translate(320, 225)" class="mimer">
+        <!-- Red spotlight -->
+        <ellipse cx="0" cy="30" rx="45" ry="50" fill="#e74c3c" opacity="0.06"/>
+        <circle cx="0" cy="0" r="16" fill="#ffd5b4"/>
+        <rect x="-14" y="18" width="28" height="35" rx="5" fill="#e74c3c"/>
+        <!-- Shifty eyes -->
+        <circle cx="-6" cy="-3" r="2.5" fill="#333"/>
+        <circle cx="6" cy="-3" r="2.5" fill="#333"/>
+        <circle cx="-5" cy="-4" r="0.8" fill="white"/>
+        <circle cx="7" cy="-4" r="0.8" fill="white"/>
+        <!-- Fake smile -->
+        <path d="M-5,7 Q0,11 5,7" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Sweating -->
+        <ellipse cx="18" cy="-5" rx="2" ry="4" fill="#74b9ff" opacity="0.6"/>
+        <!-- Instrument — NOT making sound -->
+        <rect x="14" y="-5" width="25" height="12" rx="4" fill="#CD853F" opacity="0.7"/>
+        <circle cx="42" cy="1" r="8" fill="#CD853F" opacity="0.7"/>
+        <!-- NO musical notes — just pretending -->
+        <!-- Label -->
+        <text x="0" y="72" text-anchor="middle" fill="#e74c3c" font-size="11" font-family="Ma Shan Zheng">南郭先生</text>
+      </g>
+
+      <!-- More real musicians -->
+      <g transform="translate(430, 235)">
+        <circle cx="0" cy="0" r="16" fill="#ffd5b4"/>
+        <rect x="-14" y="18" width="28" height="35" rx="5" fill="#2c3e50"/>
+        <circle cx="-5" cy="-2" r="2" fill="#333"/>
+        <circle cx="5" cy="-2" r="2" fill="#333"/>
+        <rect x="14" y="-5" width="25" height="12" rx="4" fill="#CD853F"/>
+        <circle cx="42" cy="1" r="8" fill="#CD853F"/>
+        <text x="50" y="-15" fill="#2ecc71" font-size="14" opacity="0.6">♪</text>
+      </g>
+
+      <!-- More musicians fading into background -->
+      <g opacity="0.4">
+        <g transform="translate(540, 240)">
+          <circle cx="0" cy="0" r="14" fill="#ffd5b4"/>
+          <rect x="-12" y="16" width="24" height="30" rx="5" fill="#2c3e50"/>
+          <rect x="12" y="-4" width="20" height="10" rx="3" fill="#CD853F"/>
+          <circle cx="34" cy="1" r="6" fill="#CD853F"/>
+        </g>
+        <g transform="translate(620, 245)">
+          <circle cx="0" cy="0" r="14" fill="#ffd5b4"/>
+          <rect x="-12" y="16" width="24" height="30" rx="5" fill="#2c3e50"/>
+          <rect x="12" y="-4" width="20" height="10" rx="3" fill="#CD853F"/>
+          <circle cx="34" cy="1" r="6" fill="#CD853F"/>
+        </g>
+        <g transform="translate(700, 250)">
+          <circle cx="0" cy="0" r="14" fill="#ffd5b4"/>
+          <rect x="-12" y="16" width="24" height="30" rx="5" fill="#2c3e50"/>
+          <rect x="12" y="-4" width="20" height="10" rx="3" fill="#CD853F"/>
+          <circle cx="34" cy="1" r="6" fill="#CD853F"/>
+        </g>
+      </g>
+
+      <!-- "300 musicians" label -->
+      <text x="450" y="350" text-anchor="middle" fill="#666" font-size="13" font-family="Patrick Hand">· · ·  300 musicians  · · ·</text>
+
+      <!-- Row 2 — more musicians behind -->
+      <g opacity="0.2">
+        <circle cx="160" cy="340" r="12" fill="#ffd5b4"/>
+        <rect x="148" y="354" width="24" height="28" rx="4" fill="#2c3e50"/>
+        <circle cx="260" cy="345" r="12" fill="#ffd5b4"/>
+        <rect x="248" y="359" width="24" height="28" rx="4" fill="#2c3e50"/>
+        <circle cx="540" cy="340" r="12" fill="#ffd5b4"/>
+        <rect x="528" y="354" width="24" height="28" rx="4" fill="#2c3e50"/>
+        <circle cx="650" cy="345" r="12" fill="#ffd5b4"/>
+        <rect x="638" y="359" width="24" height="28" rx="4" fill="#2c3e50"/>
+        <circle cx="370" cy="348" r="12" fill="#ffd5b4"/>
+        <rect x="358" y="362" width="24" height="28" rx="4" fill="#e74c3c" opacity="0.5"/>
+      </g>
+    </svg>
+    <div class="panel-caption">
+      The King of Qi loved <em>big ensembles</em> — three hundred 竽 players at once.
+      南郭先生 held the instrument, puffed his cheeks, moved his fingers.
+      <span class="red">No sound came out. Nobody noticed.</span>
+      <span class="zh">齐宣王爱大合奏——三百人齐鸣。南郭先生鼓着腮帮，动着手指。没有声音。没有人发现。</span>
+      <span class="jp">斉の宣王は大合奏を愛した——三百人が一斉に鳴らす。南郭先生は頬を膨らませ、指を動かした。音は出ない。誰も気づかなかった。</span>
+    </div>
+  </div>
+
+  <!-- Panel 2: The Modern Ensemble -->
+  <div class="panel">
+    <div class="panel-number">二</div>
+    <svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+      <rect width="900" height="500" fill="#0f0f1a"/>
+
+      <!-- Conference room table -->
+      <ellipse cx="450" cy="300" rx="320" ry="100" fill="#1a2a3a" stroke="#2a3a4a" stroke-width="2"/>
+
+      <!-- The "SDLC Orchestra" label on table -->
+      <text x="450" y="305" text-anchor="middle" fill="#2a3a4a" font-size="16" font-family="Patrick Hand">SDLC PROCESS</text>
+
+      <!-- Real contributors — developers (small, at edges) -->
+      <!-- Dev 1 - actually coding -->
+      <g transform="translate(100, 240)">
+        <circle cx="0" cy="0" r="18" fill="#ffd5b4"/>
+        <rect x="-15" y="20" width="30" height="38" rx="5" fill="#2ecc71"/>
+        <circle cx="-5" cy="-2" r="2" fill="#333"/>
+        <circle cx="5" cy="-2" r="2" fill="#333"/>
+        <path d="M-4,7 Q0,3 4,7" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Laptop -->
+        <rect x="-22" y="55" width="44" height="28" rx="3" fill="#333"/>
+        <rect x="-19" y="58" width="38" height="20" rx="2" fill="#0a2a0a"/>
+        <text x="0" y="71" text-anchor="middle" fill="#2ecc71" font-size="7" font-family="monospace">code</text>
+        <text x="0" y="100" text-anchor="middle" fill="#2ecc71" font-size="9" font-family="Patrick Hand">Dev</text>
+        <!-- Musical note — real output -->
+        <text x="30" y="-10" fill="#2ecc71" font-size="16" opacity="0.7">♪</text>
+      </g>
+
+      <!-- Dev 2 -->
+      <g transform="translate(800, 250)">
+        <circle cx="0" cy="0" r="18" fill="#c68642"/>
+        <rect x="-15" y="20" width="30" height="38" rx="5" fill="#2ecc71"/>
+        <circle cx="-5" cy="-2" r="2" fill="#333"/>
+        <circle cx="5" cy="-2" r="2" fill="#333"/>
+        <path d="M-4,7 Q0,3 4,7" fill="none" stroke="#333" stroke-width="1.5"/>
+        <rect x="-22" y="55" width="44" height="28" rx="3" fill="#333"/>
+        <rect x="-19" y="58" width="38" height="20" rx="2" fill="#0a2a0a"/>
+        <text x="0" y="71" text-anchor="middle" fill="#2ecc71" font-size="7" font-family="monospace">code</text>
+        <text x="0" y="100" text-anchor="middle" fill="#2ecc71" font-size="9" font-family="Patrick Hand">Dev</text>
+        <text x="-30" y="-10" fill="#2ecc71" font-size="16" opacity="0.7">♫</text>
+      </g>
+
+      <!-- === THE 南郭先生 ENSEMBLE — clustered on the table === -->
+
+      <!-- Row 1: front row, center of table -->
+
+      <!-- Scrum Master — biggest faker, dead center -->
+      <g transform="translate(350, 240)" class="mimer">
+        <ellipse cx="0" cy="30" rx="40" ry="45" fill="#e74c3c" opacity="0.05"/>
+        <circle cx="0" cy="0" r="20" fill="#ffd5b4"/>
+        <rect x="-17" y="22" width="34" height="42" rx="6" fill="#e74c3c"/>
+        <circle cx="-6" cy="-3" r="2.5" fill="#333"/>
+        <circle cx="6" cy="-3" r="2.5" fill="#333"/>
+        <path d="M-6,8 Q0,12 6,8" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Sticky notes instead of instrument -->
+        <rect x="18" y="-5" width="22" height="18" rx="2" fill="#fff9c4" transform="rotate(5,29,4)"/>
+        <text x="29" y="8" text-anchor="middle" fill="#999" font-size="6" font-family="Patrick Hand">blockers?</text>
+        <text x="0" y="82" text-anchor="middle" fill="#e74c3c" font-size="10" font-family="Patrick Hand">Scrum Master</text>
+      </g>
+
+      <!-- BA — center-right -->
+      <g transform="translate(480, 230)" class="mimer" style="animation-delay: 0.3s">
+        <circle cx="0" cy="0" r="18" fill="#ffd5b4"/>
+        <rect x="-15" y="20" width="30" height="38" rx="5" fill="#e74c3c" opacity="0.8"/>
+        <circle cx="-5" cy="-2" r="2" fill="#333"/>
+        <circle cx="5" cy="-2" r="2" fill="#333"/>
+        <path d="M-4,7 Q0,11 4,7" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Big document -->
+        <rect x="16" y="-10" width="24" height="30" rx="2" fill="white" opacity="0.8"/>
+        <line x1="20" y1="-2" x2="36" y2="-2" stroke="#ddd" stroke-width="1.5"/>
+        <line x1="20" y1="4" x2="36" y2="4" stroke="#ddd" stroke-width="1.5"/>
+        <line x1="20" y1="10" x2="30" y2="10" stroke="#ddd" stroke-width="1.5"/>
+        <text x="0" y="76" text-anchor="middle" fill="#e74c3c" font-size="10" font-family="Patrick Hand">BA</text>
+      </g>
+
+      <!-- Release Manager — right -->
+      <g transform="translate(600, 250)" class="mimer" style="animation-delay: 0.6s">
+        <circle cx="0" cy="0" r="18" fill="#ffd5b4"/>
+        <rect x="-15" y="20" width="30" height="38" rx="5" fill="#e74c3c" opacity="0.8"/>
+        <circle cx="-5" cy="-2" r="2" fill="#333"/>
+        <circle cx="5" cy="-2" r="2" fill="#333"/>
+        <path d="M-4,7 Q0,11 4,7" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Checklist -->
+        <rect x="16" y="-8" width="22" height="26" rx="2" fill="white" opacity="0.8"/>
+        <text x="21" y="2" fill="#2ecc71" font-size="10">☑</text>
+        <text x="21" y="12" fill="#2ecc71" font-size="10">☑</text>
+        <text x="0" y="76" text-anchor="middle" fill="#e74c3c" font-size="10" font-family="Patrick Hand">Release Mgr</text>
+      </g>
+
+      <!-- Row 2: behind the table, lower -->
+
+      <!-- QA Manager -->
+      <g transform="translate(290, 320)" class="mimer" style="animation-delay: 0.9s">
+        <circle cx="0" cy="0" r="16" fill="#ffd5b4"/>
+        <rect x="-13" y="18" width="26" height="34" rx="5" fill="#e74c3c" opacity="0.7"/>
+        <circle cx="-4" cy="-2" r="2" fill="#333"/>
+        <circle cx="4" cy="-2" r="2" fill="#333"/>
+        <path d="M-4,7 Q0,10 4,7" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Spreadsheet -->
+        <rect x="14" y="-6" width="20" height="20" rx="2" fill="white" opacity="0.7"/>
+        <line x1="14" y1="1" x2="34" y2="1" stroke="#ddd" stroke-width="0.8"/>
+        <line x1="14" y1="7" x2="34" y2="7" stroke="#ddd" stroke-width="0.8"/>
+        <line x1="24" y1="-6" x2="24" y2="14" stroke="#ddd" stroke-width="0.8"/>
+        <text x="0" y="68" text-anchor="middle" fill="#e74c3c" font-size="9" font-family="Patrick Hand">QA Mgr</text>
+      </g>
+
+      <!-- Agile Coach -->
+      <g transform="translate(420, 330)" class="mimer" style="animation-delay: 1.2s">
+        <circle cx="0" cy="0" r="16" fill="#ffd5b4"/>
+        <rect x="-13" y="18" width="26" height="34" rx="5" fill="#e74c3c" opacity="0.7"/>
+        <circle cx="-4" cy="-2" r="2" fill="#333"/>
+        <circle cx="4" cy="-2" r="2" fill="#333"/>
+        <path d="M-4,7 Q0,10 4,7" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- SAFe certificate -->
+        <rect x="14" y="-8" width="22" height="16" rx="2" fill="#DAA520" opacity="0.8"/>
+        <text x="25" y="3" text-anchor="middle" fill="white" font-size="5" font-weight="bold">SAFe®</text>
+        <text x="0" y="68" text-anchor="middle" fill="#e74c3c" font-size="9" font-family="Patrick Hand">Agile Coach</text>
+      </g>
+
+      <!-- PMO -->
+      <g transform="translate(550, 325)" class="mimer" style="animation-delay: 0.5s">
+        <circle cx="0" cy="0" r="16" fill="#ffd5b4"/>
+        <rect x="-13" y="18" width="26" height="34" rx="5" fill="#e74c3c" opacity="0.7"/>
+        <circle cx="-4" cy="-2" r="2" fill="#333"/>
+        <circle cx="4" cy="-2" r="2" fill="#333"/>
+        <path d="M-4,7 Q0,10 4,7" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- PowerPoint -->
+        <rect x="14" y="-6" width="20" height="15" rx="2" fill="#c0392b" opacity="0.8"/>
+        <text x="24" y="5" text-anchor="middle" fill="white" font-size="5" font-weight="bold">PPT</text>
+        <text x="0" y="68" text-anchor="middle" fill="#e74c3c" font-size="9" font-family="Patrick Hand">PMO</text>
+      </g>
+
+      <!-- Enterprise Architect -->
+      <g transform="translate(670, 310)" class="mimer" style="animation-delay: 0.8s">
+        <circle cx="0" cy="0" r="16" fill="#ffd5b4"/>
+        <rect x="-13" y="18" width="26" height="34" rx="5" fill="#e74c3c" opacity="0.7"/>
+        <circle cx="-4" cy="-2" r="2" fill="#333"/>
+        <circle cx="4" cy="-2" r="2" fill="#333"/>
+        <path d="M-4,7 Q0,10 4,7" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Visio diagram -->
+        <rect x="14" y="-6" width="20" height="18" rx="2" fill="white" opacity="0.7"/>
+        <rect x="17" y="-3" width="6" height="5" rx="1" fill="#3498db" opacity="0.5"/>
+        <rect x="25" y="3" width="6" height="5" rx="1" fill="#3498db" opacity="0.5"/>
+        <line x1="23" y1="0" x2="25" y2="5" stroke="#3498db" stroke-width="0.8"/>
+        <text x="0" y="68" text-anchor="middle" fill="#e74c3c" font-size="9" font-family="Patrick Hand">EA</text>
+      </g>
+
+      <!-- === 南郭 Devs — hiding among real devs === -->
+
+      <!-- Fake Dev 1 — "researching" -->
+      <g transform="translate(200, 270)" class="mimer" style="animation-delay: 0.4s">
+        <circle cx="0" cy="0" r="16" fill="#ffd5b4"/>
+        <rect x="-13" y="18" width="26" height="34" rx="5" fill="#27ae60" opacity="0.7"/>
+        <!-- Shifty eyes -->
+        <circle cx="-5" cy="-2" r="2.5" fill="#333"/>
+        <circle cx="5" cy="-2" r="2.5" fill="#333"/>
+        <circle cx="-4" cy="-3" r="0.8" fill="white"/>
+        <circle cx="6" cy="-3" r="0.8" fill="white"/>
+        <path d="M-4,8 Q0,11 4,8" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Laptop showing Stack Overflow -->
+        <rect x="-22" y="50" width="44" height="26" rx="3" fill="#333"/>
+        <rect x="-19" y="53" width="38" height="18" rx="2" fill="#f48024" opacity="0.3"/>
+        <text x="0" y="65" text-anchor="middle" fill="white" font-size="5" font-family="monospace">StackOverflow</text>
+        <text x="0" y="92" text-anchor="middle" fill="#e74c3c" font-size="8" font-family="Patrick Hand">"Researching"</text>
+        <!-- NO musical notes -->
+      </g>
+
+      <!-- Fake Dev 2 — perpetual PR reviewer -->
+      <g transform="translate(700, 280)" class="mimer" style="animation-delay: 0.7s">
+        <circle cx="0" cy="0" r="16" fill="#c68642"/>
+        <rect x="-13" y="18" width="26" height="34" rx="5" fill="#27ae60" opacity="0.7"/>
+        <circle cx="-5" cy="-2" r="2.5" fill="#333"/>
+        <circle cx="5" cy="-2" r="2.5" fill="#333"/>
+        <circle cx="-4" cy="-3" r="0.8" fill="white"/>
+        <circle cx="6" cy="-3" r="0.8" fill="white"/>
+        <path d="M-4,8 Q0,11 4,8" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Laptop showing LGTM -->
+        <rect x="-22" y="50" width="44" height="26" rx="3" fill="#333"/>
+        <rect x="-19" y="53" width="38" height="18" rx="2" fill="#0a2a0a"/>
+        <text x="0" y="65" text-anchor="middle" fill="#2ecc71" font-size="7" font-family="monospace">LGTM 👍</text>
+        <text x="0" y="92" text-anchor="middle" fill="#e74c3c" font-size="8" font-family="Patrick Hand">"Reviewing"</text>
+        <!-- NO musical notes -->
+      </g>
+
+      <!-- Fake Dev 3 — meeting hopper -->
+      <g transform="translate(450, 390)" class="mimer" style="animation-delay: 1.0s">
+        <circle cx="0" cy="0" r="14" fill="#ffd5b4"/>
+        <rect x="-11" y="16" width="22" height="30" rx="4" fill="#27ae60" opacity="0.7"/>
+        <circle cx="-4" cy="-2" r="2" fill="#333"/>
+        <circle cx="4" cy="-2" r="2" fill="#333"/>
+        <path d="M-3,7 Q0,10 3,7" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Calendar icon -->
+        <rect x="12" y="-6" width="18" height="16" rx="2" fill="white" opacity="0.7"/>
+        <rect x="12" y="-6" width="18" height="5" rx="2" fill="#3498db" opacity="0.6"/>
+        <line x1="16" y1="3" x2="26" y2="3" stroke="#ddd" stroke-width="0.8"/>
+        <line x1="16" y1="7" x2="22" y2="7" stroke="#ddd" stroke-width="0.8"/>
+        <text x="0" y="62" text-anchor="middle" fill="#e74c3c" font-size="8" font-family="Patrick Hand">"In a meeting"</text>
+        <!-- NO musical notes -->
+      </g>
+
+      <!-- "CTO" as the new king -->
+      <g transform="translate(450, 50)">
+        <circle cx="0" cy="0" r="24" fill="#ffd5b4"/>
+        <rect x="-20" y="26" width="40" height="45" rx="6" fill="#1a1a3e"/>
+        <path d="M-8,-3 Q-5,-7 -2,-3" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+        <path d="M2,-3 Q5,-7 8,-3" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+        <path d="M-7,8 Q0,16 7,8" fill="none" stroke="#333" stroke-width="2"/>
+        <!-- Tie -->
+        <polygon points="0,28 -5,38 0,55 5,38" fill="#e74c3c"/>
+        <text x="0" y="90" text-anchor="middle" fill="#666" font-size="11" font-family="Patrick Hand">CTO: "Scale the team!"</text>
+      </g>
+
+      <!-- Counter: ratio -->
+      <text x="450" y="480" text-anchor="middle" fill="#e74c3c" font-size="14" font-family="Patrick Hand" opacity="0.4">
+        2 developers making music  ·  9 roles making noise
+      </text>
+    </svg>
+    <div class="panel-caption">
+      Two thousand years later, the ensemble is bigger than ever.
+      The <em>developers</em> sit at the edges, making real music.
+      The middle is filled with roles holding documents, checklists,
+      certificates, and PowerPoints — <span class="red">instruments that make no sound</span>.
+      <span class="zh">两千年后，合奏团更大了。开发者在边缘弹奏真正的音乐。中间坐满了举着文档、检查表、证书和PPT的人——不发声的乐器。</span>
+      <span class="jp">二千年後、合奏団はさらに大きくなった。開発者は端で本物の音楽を奏でる。中央にはドキュメント、チェックリスト、証明書、PPTを掲げた者たちが座る——音の出ない楽器。</span>
+    </div>
+  </div>
+
+  <!-- Panel 3: The Solo Test -->
+  <div class="panel">
+    <div class="panel-number">三</div>
+    <svg viewBox="0 0 900 450" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="solo-bg" cx="50%" cy="40%">
+          <stop offset="0%" stop-color="#1a1a2e"/>
+          <stop offset="100%" stop-color="#0a0a15"/>
+        </radialGradient>
+      </defs>
+      <rect width="900" height="450" fill="url(#solo-bg)"/>
+
+      <!-- Spotlight -->
+      <polygon points="400,0 500,0 580,450 320,450" fill="white" opacity="0.015"/>
+      <ellipse cx="450" cy="380" rx="100" ry="15" fill="#f8b400" opacity="0.06"/>
+
+      <!-- Stage -->
+      <rect x="100" y="370" width="700" height="80" rx="0" fill="#1a0a0a"/>
+      <rect x="100" y="370" width="700" height="5" fill="#DAA520" opacity="0.3"/>
+
+      <!-- Scrum Master alone on stage — panicking -->
+      <g transform="translate(450, 300)">
+        <circle cx="0" cy="0" r="28" fill="#ffd5b4"/>
+        <rect x="-22" y="30" width="44" height="55" rx="8" fill="#e74c3c"/>
+        <!-- Panic face -->
+        <circle cx="-8" cy="-5" r="4" fill="#333"/>
+        <circle cx="8" cy="-5" r="4" fill="#333"/>
+        <circle cx="-7" cy="-6" r="1.5" fill="white"/>
+        <circle cx="9" cy="-6" r="1.5" fill="white"/>
+        <!-- Open mouth — shock -->
+        <ellipse cx="0" cy="12" rx="8" ry="10" fill="#333"/>
+        <!-- Sweat -->
+        <ellipse cx="32" cy="-10" rx="3" ry="6" fill="#74b9ff" opacity="0.7"/>
+        <ellipse cx="-32" cy="-5" rx="3" ry="6" fill="#74b9ff" opacity="0.6"/>
+        <ellipse cx="28" cy="8" rx="2.5" ry="5" fill="#74b9ff" opacity="0.5"/>
+        <!-- Shaking hands holding... a sticky note -->
+        <rect x="28" y="20" width="30" height="22" rx="2" fill="#fff9c4" transform="rotate(8,43,31)"/>
+        <text x="43" y="34" text-anchor="middle" fill="#999" font-size="7" font-family="Patrick Hand" transform="rotate(8,43,31)">any</text>
+        <text x="43" y="42" text-anchor="middle" fill="#999" font-size="7" font-family="Patrick Hand" transform="rotate(8,43,31)">blockers?</text>
+        <!-- Badge -->
+        <rect x="-16" y="38" width="32" height="14" rx="3" fill="#c0392b"/>
+        <text x="0" y="49" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="Patrick Hand">SCRUM</text>
+      </g>
+
+      <!-- Voice from audience -->
+      <text x="450" y="80" text-anchor="middle" fill="#f8b400" font-size="22" font-family="Patrick Hand">"Show us what you built."</text>
+
+      <!-- Empty chairs where others fled -->
+      <g opacity="0.2">
+        <!-- Chair 1 -->
+        <rect x="180" y="340" width="30" height="25" rx="4" fill="#555"/>
+        <rect x="183" y="320" width="24" height="25" rx="3" fill="#555"/>
+        <text x="195" y="395" text-anchor="middle" fill="#666" font-size="8" font-family="Patrick Hand">BA</text>
+
+        <!-- Chair 2 -->
+        <rect x="280" y="340" width="30" height="25" rx="4" fill="#555"/>
+        <rect x="283" y="320" width="24" height="25" rx="3" fill="#555"/>
+        <text x="295" y="395" text-anchor="middle" fill="#666" font-size="8" font-family="Patrick Hand">PMO</text>
+
+        <!-- Chair 3 -->
+        <rect x="600" y="340" width="30" height="25" rx="4" fill="#555"/>
+        <rect x="603" y="320" width="24" height="25" rx="3" fill="#555"/>
+        <text x="615" y="395" text-anchor="middle" fill="#666" font-size="8" font-family="Patrick Hand">EA</text>
+
+        <!-- Chair 4 -->
+        <rect x="700" y="340" width="30" height="25" rx="4" fill="#555"/>
+        <rect x="703" y="320" width="24" height="25" rx="3" fill="#555"/>
+        <text x="715" y="395" text-anchor="middle" fill="#666" font-size="8" font-family="Patrick Hand">Coach</text>
+      </g>
+
+      <!-- Dropped items on floor -->
+      <g opacity="0.25">
+        <rect x="200" y="375" width="18" height="12" rx="1" fill="#fff9c4" transform="rotate(-20,209,381)"/>
+        <rect x="620" y="378" width="20" height="14" rx="1" fill="#DAA520" transform="rotate(10,630,385)"/>
+        <text x="630" y="388" text-anchor="middle" fill="white" font-size="5" transform="rotate(10,630,385)">SAFe®</text>
+        <rect x="290" y="380" width="16" height="22" rx="1" fill="white" transform="rotate(-8,298,391)"/>
+      </g>
+
+      <!-- Audience silhouettes -->
+      <g opacity="0.15">
+        <circle cx="150" cy="130" r="15" fill="white"/>
+        <circle cx="250" cy="120" r="15" fill="white"/>
+        <circle cx="350" cy="125" r="15" fill="white"/>
+        <circle cx="550" cy="125" r="15" fill="white"/>
+        <circle cx="650" cy="120" r="15" fill="white"/>
+        <circle cx="750" cy="130" r="15" fill="white"/>
+      </g>
+    </svg>
+    <div class="panel-caption">
+      Then someone asks: <em>"Show us what you built."</em>
+      <br>
+      The chairs empty. The BA's document is on the floor.
+      The Agile Coach's SAFe certificate lies next to it.
+      The Scrum Master stands alone under the spotlight, holding a sticky note that says
+      <span class="red">"any blockers?"</span>
+      <span class="zh">然后有人问："给我们看看你造了什么。"椅子空了。BA的文档落在地上，敏捷教练的SAFe证书在旁边。只剩Scrum Master独自站在聚光灯下，握着一张写着"有阻碍吗？"的便利贴。</span>
+      <span class="jp">そして誰かが言う：「何を作ったか見せてください」。椅子は空になる。BAの文書は床に落ち、アジャイルコーチのSAFe証明書がその横に。スクラムマスターだけがスポットライトの下に立ち、「ブロッカーある？」と書いた付箋を握りしめている。</span>
+    </div>
+  </div>
+
+  <div class="divider">— 转折 —</div>
+
+  <!-- Panel 4: The Notation Studio Model -->
+  <div class="panel">
+    <div class="panel-number">四</div>
+    <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="studio-bg" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="#0a1a2a"/>
+          <stop offset="100%" stop-color="#0f0f1a"/>
+        </radialGradient>
+      </defs>
+      <rect width="900" height="400" fill="url(#studio-bg)"/>
+
+      <!-- DAW-style tracks -->
+      <!-- Track labels -->
+      <rect x="30" y="40" width="90" height="30" rx="4" fill="#f8b400" opacity="0.2"/>
+      <text x="75" y="60" text-anchor="middle" fill="#f8b400" font-size="12" font-family="Patrick Hand">L1_Spec</text>
+
+      <rect x="30" y="90" width="90" height="30" rx="4" fill="#e67e22" opacity="0.2"/>
+      <text x="75" y="110" text-anchor="middle" fill="#e67e22" font-size="12" font-family="Patrick Hand">L2_Spec</text>
+
+      <rect x="30" y="140" width="90" height="30" rx="4" fill="#3498db" opacity="0.2"/>
+      <text x="75" y="160" text-anchor="middle" fill="#3498db" font-size="12" font-family="Patrick Hand">L3_Spec</text>
+
+      <rect x="30" y="190" width="90" height="30" rx="4" fill="#2ecc71" opacity="0.2"/>
+      <text x="75" y="210" text-anchor="middle" fill="#2ecc71" font-size="12" font-family="Patrick Hand">Piece</text>
+
+      <rect x="30" y="240" width="90" height="30" rx="4" fill="#9b59b6" opacity="0.2"/>
+      <text x="75" y="260" text-anchor="middle" fill="#9b59b6" font-size="12" font-family="Patrick Hand">@ForFeature</text>
+
+      <!-- Track waveforms / note blocks -->
+      <!-- L1 -->
+      <rect x="140" y="42" width="700" height="26" rx="3" fill="#1a1a30"/>
+      <rect x="160" y="46" width="120" height="18" rx="3" fill="#f8b400" opacity="0.4"/>
+      <text x="220" y="59" text-anchor="middle" fill="#f8b400" font-size="10" font-family="monospace">ProjectGoal</text>
+
+      <!-- L2 -->
+      <rect x="140" y="92" width="700" height="26" rx="3" fill="#1a1a30"/>
+      <rect x="180" y="96" width="100" height="18" rx="3" fill="#e67e22" opacity="0.4"/>
+      <text x="230" y="109" text-anchor="middle" fill="#e67e22" font-size="10" font-family="monospace">AuthEpic</text>
+      <rect x="350" y="96" width="100" height="18" rx="3" fill="#e67e22" opacity="0.4"/>
+      <text x="400" y="109" text-anchor="middle" fill="#e67e22" font-size="10" font-family="monospace">DataEpic</text>
+      <rect x="520" y="96" width="100" height="18" rx="3" fill="#e67e22" opacity="0.4"/>
+      <text x="570" y="109" text-anchor="middle" fill="#e67e22" font-size="10" font-family="monospace">UIEpic</text>
+
+      <!-- L3 -->
+      <rect x="140" y="142" width="700" height="26" rx="3" fill="#1a1a30"/>
+      <rect x="170" y="146" width="70" height="18" rx="3" fill="#3498db" opacity="0.4"/>
+      <rect x="250" y="146" width="70" height="18" rx="3" fill="#3498db" opacity="0.4"/>
+      <rect x="360" y="146" width="70" height="18" rx="3" fill="#3498db" opacity="0.4"/>
+      <rect x="440" y="146" width="70" height="18" rx="3" fill="#3498db" opacity="0.4"/>
+      <rect x="540" y="146" width="70" height="18" rx="3" fill="#3498db" opacity="0.4"/>
+      <rect x="620" y="146" width="70" height="18" rx="3" fill="#3498db" opacity="0.4"/>
+      <rect x="710" y="146" width="70" height="18" rx="3" fill="#3498db" opacity="0.4"/>
+
+      <!-- Pieces -->
+      <rect x="140" y="192" width="700" height="26" rx="3" fill="#1a1a30"/>
+      <g>
+        <rect x="170" y="196" width="30" height="18" rx="2" fill="#2ecc71" opacity="0.6"/>
+        <text x="185" y="209" text-anchor="middle" fill="white" font-size="8">✓</text>
+        <rect x="208" y="196" width="30" height="18" rx="2" fill="#2ecc71" opacity="0.6"/>
+        <text x="223" y="209" text-anchor="middle" fill="white" font-size="8">✓</text>
+        <rect x="246" y="196" width="30" height="18" rx="2" fill="#f8b400" opacity="0.5"/>
+        <rect x="284" y="196" width="30" height="18" rx="2" fill="#2ecc71" opacity="0.6"/>
+        <text x="299" y="209" text-anchor="middle" fill="white" font-size="8">✓</text>
+        <rect x="360" y="196" width="30" height="18" rx="2" fill="#f8b400" opacity="0.5"/>
+        <rect x="398" y="196" width="30" height="18" rx="2" fill="#f8b400" opacity="0.5"/>
+        <rect x="436" y="196" width="30" height="18" rx="2" fill="#2ecc71" opacity="0.6"/>
+        <text x="451" y="209" text-anchor="middle" fill="white" font-size="8">✓</text>
+        <rect x="540" y="196" width="30" height="18" rx="2" fill="#e74c3c" opacity="0.4"/>
+        <rect x="578" y="196" width="30" height="18" rx="2" fill="#f8b400" opacity="0.5"/>
+        <rect x="616" y="196" width="30" height="18" rx="2" fill="#2ecc71" opacity="0.6"/>
+        <text x="631" y="209" text-anchor="middle" fill="white" font-size="8">✓</text>
+        <rect x="710" y="196" width="30" height="18" rx="2" fill="#f8b400" opacity="0.5"/>
+        <rect x="748" y="196" width="30" height="18" rx="2" fill="#2ecc71" opacity="0.6"/>
+        <text x="763" y="209" text-anchor="middle" fill="white" font-size="8">✓</text>
+      </g>
+
+      <!-- @ForFeature links — arrows from code to specs -->
+      <rect x="140" y="242" width="700" height="26" rx="3" fill="#1a1a30"/>
+      <g opacity="0.5">
+        <rect x="180" y="246" width="60" height="18" rx="2" fill="#9b59b6" opacity="0.4"/>
+        <text x="210" y="259" text-anchor="middle" fill="#9b59b6" font-size="7" font-family="monospace">.java</text>
+        <rect x="260" y="246" width="60" height="18" rx="2" fill="#9b59b6" opacity="0.4"/>
+        <text x="290" y="259" text-anchor="middle" fill="#9b59b6" font-size="7" font-family="monospace">.java</text>
+        <rect x="370" y="246" width="60" height="18" rx="2" fill="#9b59b6" opacity="0.4"/>
+        <text x="400" y="259" text-anchor="middle" fill="#9b59b6" font-size="7" font-family="monospace">.java</text>
+        <rect x="480" y="246" width="60" height="18" rx="2" fill="#9b59b6" opacity="0.4"/>
+        <text x="510" y="259" text-anchor="middle" fill="#9b59b6" font-size="7" font-family="monospace">.java</text>
+        <rect x="580" y="246" width="60" height="18" rx="2" fill="#9b59b6" opacity="0.4"/>
+        <text x="610" y="259" text-anchor="middle" fill="#9b59b6" font-size="7" font-family="monospace">.java</text>
+        <rect x="680" y="246" width="60" height="18" rx="2" fill="#9b59b6" opacity="0.4"/>
+        <text x="710" y="259" text-anchor="middle" fill="#9b59b6" font-size="7" font-family="monospace">.java</text>
+      </g>
+
+      <!-- Playhead -->
+      <line x1="500" y1="35" x2="500" y2="275" stroke="#e74c3c" stroke-width="2" opacity="0.6"/>
+      <polygon points="496,35 504,35 500,28" fill="#e74c3c" opacity="0.6"/>
+
+      <!-- SOLO button per track — the key insight -->
+      <g>
+        <rect x="845" y="44" width="30" height="22" rx="4" fill="#2ecc71" opacity="0.8"/>
+        <text x="860" y="59" text-anchor="middle" fill="white" font-size="8" font-weight="bold">SOLO</text>
+        <rect x="845" y="94" width="30" height="22" rx="4" fill="#2ecc71" opacity="0.8"/>
+        <text x="860" y="109" text-anchor="middle" fill="white" font-size="8" font-weight="bold">SOLO</text>
+        <rect x="845" y="144" width="30" height="22" rx="4" fill="#2ecc71" opacity="0.8"/>
+        <text x="860" y="159" text-anchor="middle" fill="white" font-size="8" font-weight="bold">SOLO</text>
+        <rect x="845" y="194" width="30" height="22" rx="4" fill="#2ecc71" opacity="0.8"/>
+        <text x="860" y="209" text-anchor="middle" fill="white" font-size="8" font-weight="bold">SOLO</text>
+        <rect x="845" y="244" width="30" height="22" rx="4" fill="#2ecc71" opacity="0.8"/>
+        <text x="860" y="259" text-anchor="middle" fill="white" font-size="8" font-weight="bold">SOLO</text>
+      </g>
+
+      <!-- Bottom label -->
+      <text x="450" y="310" text-anchor="middle" fill="#3498db" font-size="15" font-family="Patrick Hand">
+        Every track is audible. Every track can be soloed.
+      </text>
+
+      <!-- Small cat sitting at the mixer -->
+      <g transform="translate(820, 310)">
+        <ellipse cx="0" cy="8" rx="15" ry="10" fill="#f5deb3"/>
+        <circle cx="-6" cy="-3" r="8" fill="#f5deb3"/>
+        <polygon points="-12,-11 -10,-3 -14,-3" fill="#f5deb3"/>
+        <polygon points="-1,-11 -3,-3 1,-3" fill="#f5deb3"/>
+        <circle cx="-8" cy="-4" r="1.5" fill="#333"/>
+        <circle cx="-4" cy="-4" r="1.5" fill="#333"/>
+        <path d="M-8,1 Q-6,4 -4,1" fill="none" stroke="#333" stroke-width="1"/>
+        <path d="M14,3 Q20,-8 17,-18" fill="none" stroke="#f5deb3" stroke-width="5" stroke-linecap="round"/>
+        <!-- Tiny headphones -->
+        <path d="M-13,-7 Q-14,-14 -6,-14 Q2,-14 1,-7" fill="none" stroke="#333" stroke-width="2"/>
+      </g>
+
+      <!-- "mvn verify" output -->
+      <rect x="140" y="330" width="300" height="60" rx="6" fill="#0a0a0a" opacity="0.8"/>
+      <text x="155" y="350" fill="#2ecc71" font-size="11" font-family="monospace">$ mvn verify</text>
+      <text x="155" y="367" fill="#2ecc71" font-size="11" font-family="monospace">Graph validation: 0 violations</text>
+      <text x="155" y="382" fill="#2ecc71" font-size="11" font-family="monospace">BUILD SUCCESS</text>
+    </svg>
+    <div class="panel-caption">
+      In a real studio, every track has a <em>SOLO</em> button.
+      Press it — you hear exactly what that track contributes.
+      Jarista is the same: every spec, every piece, every <em>@ForFeature</em> link
+      is audible on its own. The graph is the mix. The build is the audience.
+      <span class="zh">真正的录音棚里，每条轨道都有SOLO键。按下去——你能精确听到它的贡献。Jarista亦然：每个仕様、每个工件、每个@ForFeature链接，皆可独奏。</span>
+      <span class="jp">本当のスタジオでは、全てのトラックにSOLOボタンがある。押せば、そのトラックの貢献が正確に聞こえる。Jaristaも同じ——全ての仕様、全てのピース、全ての@ForFeatureリンクが単独で聞こえる。</span>
+    </div>
+  </div>
+
+  <!-- Panel 5: The Exodus -->
+  <div class="panel">
+    <div class="panel-number">五</div>
+    <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg">
+      <rect width="900" height="400" fill="#0f0f1a"/>
+
+      <!-- Door with "EXIT" sign — right side -->
+      <rect x="750" y="80" width="120" height="260" rx="4" fill="#1a0a0a" stroke="#333" stroke-width="2"/>
+      <rect x="760" y="90" width="100" height="180" fill="#0a0a0a"/>
+      <!-- Light streaming through door -->
+      <polygon points="760,90 860,90 900,60 900,320 860,270 760,270" fill="white" opacity="0.02"/>
+      <!-- EXIT sign -->
+      <rect x="775" y="60" width="50" height="20" rx="3" fill="#e74c3c"/>
+      <text x="800" y="75" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="Patrick Hand">EXIT</text>
+
+      <!-- Figures fleeing toward exit — each dropping their artifact -->
+
+      <!-- BA running -->
+      <g transform="translate(650, 200)">
+        <circle cx="0" cy="0" r="16" fill="#ffd5b4"/>
+        <rect x="-12" y="18" width="24" height="32" rx="5" fill="#e74c3c" opacity="0.7"/>
+        <!-- Running legs -->
+        <line x1="-5" y1="50" x2="-15" y2="75" stroke="#2c3e50" stroke-width="5" stroke-linecap="round"/>
+        <line x1="5" y1="50" x2="20" y2="70" stroke="#2c3e50" stroke-width="5" stroke-linecap="round"/>
+        <!-- Looking back nervously -->
+        <circle cx="-6" cy="-2" r="2" fill="#333"/>
+        <circle cx="4" cy="-2" r="2" fill="#333"/>
+        <!-- Dropping document -->
+        <rect x="-30" y="60" width="18" height="24" rx="2" fill="white" opacity="0.3" transform="rotate(-30,-21,72)"/>
+        <text x="0" y="95" text-anchor="middle" fill="#666" font-size="8" font-family="Patrick Hand">BA</text>
+      </g>
+
+      <!-- Agile Coach running -->
+      <g transform="translate(580, 170)">
+        <circle cx="0" cy="0" r="16" fill="#ffd5b4"/>
+        <rect x="-12" y="18" width="24" height="32" rx="5" fill="#e74c3c" opacity="0.7"/>
+        <line x1="-5" y1="50" x2="-18" y2="72" stroke="#2c3e50" stroke-width="5" stroke-linecap="round"/>
+        <line x1="5" y1="50" x2="22" y2="68" stroke="#2c3e50" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="-5" cy="-2" r="2" fill="#333"/>
+        <circle cx="5" cy="-2" r="2" fill="#333"/>
+        <!-- Dropping SAFe cert -->
+        <rect x="15" y="55" width="22" height="14" rx="2" fill="#DAA520" opacity="0.3" transform="rotate(20,26,62)"/>
+        <text x="0" y="95" text-anchor="middle" fill="#666" font-size="8" font-family="Patrick Hand">Coach</text>
+      </g>
+
+      <!-- Release Manager running -->
+      <g transform="translate(500, 220)">
+        <circle cx="0" cy="0" r="14" fill="#ffd5b4"/>
+        <rect x="-11" y="16" width="22" height="28" rx="4" fill="#e74c3c" opacity="0.6"/>
+        <line x1="-4" y1="44" x2="-14" y2="65" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+        <line x1="4" y1="44" x2="18" y2="62" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="-4" cy="-2" r="2" fill="#333"/>
+        <circle cx="4" cy="-2" r="2" fill="#333"/>
+        <!-- Dropping checklist -->
+        <rect x="-25" y="50" width="16" height="20" rx="2" fill="white" opacity="0.2" transform="rotate(-15,-17,60)"/>
+        <text x="0" y="85" text-anchor="middle" fill="#666" font-size="8" font-family="Patrick Hand">Rel Mgr</text>
+      </g>
+
+      <!-- PMO walking briskly -->
+      <g transform="translate(420, 190)">
+        <circle cx="0" cy="0" r="14" fill="#ffd5b4"/>
+        <rect x="-11" y="16" width="22" height="28" rx="4" fill="#e74c3c" opacity="0.6"/>
+        <line x1="-4" y1="44" x2="-10" y2="65" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+        <line x1="4" y1="44" x2="14" y2="63" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="-4" cy="-2" r="2" fill="#333"/>
+        <circle cx="4" cy="-2" r="2" fill="#333"/>
+        <!-- Dropping PPT -->
+        <rect x="12" y="45" width="18" height="12" rx="2" fill="#c0392b" opacity="0.2" transform="rotate(25,21,51)"/>
+        <text x="0" y="85" text-anchor="middle" fill="#666" font-size="8" font-family="Patrick Hand">PMO</text>
+      </g>
+
+      <!-- Scrum Master — last one, looking back longingly -->
+      <g transform="translate(340, 240)">
+        <circle cx="0" cy="0" r="16" fill="#ffd5b4"/>
+        <rect x="-13" y="18" width="26" height="34" rx="5" fill="#e74c3c"/>
+        <line x1="-5" y1="52" x2="-12" y2="75" stroke="#2c3e50" stroke-width="5" stroke-linecap="round"/>
+        <line x1="5" y1="52" x2="16" y2="73" stroke="#2c3e50" stroke-width="5" stroke-linecap="round"/>
+        <!-- Sad eyes looking back -->
+        <circle cx="-6" cy="-2" r="2.5" fill="#333"/>
+        <circle cx="4" cy="-2" r="2.5" fill="#333"/>
+        <path d="M-6,10 Q0,7 6,10" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Sticky note fluttering away -->
+        <rect x="-35" y="30" width="22" height="18" rx="2" fill="#fff9c4" opacity="0.4" transform="rotate(-40,-24,39)"/>
+        <text x="0" y="98" text-anchor="middle" fill="#888" font-size="9" font-family="Patrick Hand">Scrum Master</text>
+      </g>
+
+      <!-- 南郭 Devs also fleeing — green shirts heading for the exit -->
+
+      <!-- Fake Dev — "Researcher" sneaking out -->
+      <g transform="translate(550, 250)">
+        <circle cx="0" cy="0" r="14" fill="#ffd5b4"/>
+        <rect x="-11" y="16" width="22" height="28" rx="4" fill="#27ae60" opacity="0.7"/>
+        <line x1="-4" y1="44" x2="-14" y2="62" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+        <line x1="4" y1="44" x2="18" y2="60" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="-4" cy="-2" r="2" fill="#333"/>
+        <circle cx="4" cy="-2" r="2" fill="#333"/>
+        <!-- Dropping Stack Overflow bookmark -->
+        <rect x="10" y="48" width="16" height="12" rx="1" fill="#f48024" opacity="0.25" transform="rotate(18,18,54)"/>
+        <text x="0" y="82" text-anchor="middle" fill="#666" font-size="7" font-family="Patrick Hand">"Researcher"</text>
+      </g>
+
+      <!-- Fake Dev — LGTM reviewer slipping away -->
+      <g transform="translate(620, 190)">
+        <circle cx="0" cy="0" r="14" fill="#c68642"/>
+        <rect x="-11" y="16" width="22" height="28" rx="4" fill="#27ae60" opacity="0.7"/>
+        <line x1="-4" y1="44" x2="-16" y2="64" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+        <line x1="4" y1="44" x2="20" y2="62" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="-4" cy="-2" r="2" fill="#333"/>
+        <circle cx="4" cy="-2" r="2" fill="#333"/>
+        <!-- Dropping empty PR review -->
+        <rect x="-24" y="50" width="16" height="12" rx="1" fill="white" opacity="0.2" transform="rotate(-22,-16,56)"/>
+        <text x="0" y="82" text-anchor="middle" fill="#666" font-size="7" font-family="Patrick Hand">"Reviewer"</text>
+      </g>
+
+      <!-- Fake Dev — meeting hopper tiptoeing out -->
+      <g transform="translate(470, 270)">
+        <circle cx="0" cy="0" r="12" fill="#ffd5b4"/>
+        <rect x="-9" y="14" width="18" height="24" rx="3" fill="#27ae60" opacity="0.6"/>
+        <line x1="-3" y1="38" x2="-10" y2="55" stroke="#2c3e50" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="3" y1="38" x2="14" y2="53" stroke="#2c3e50" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="-3" cy="-1" r="1.5" fill="#333"/>
+        <circle cx="3" cy="-1" r="1.5" fill="#333"/>
+        <!-- Dropping calendar -->
+        <rect x="8" y="40" width="12" height="10" rx="1" fill="#3498db" opacity="0.2" transform="rotate(12,14,45)"/>
+        <text x="0" y="72" text-anchor="middle" fill="#666" font-size="7" font-family="Patrick Hand">"Meeting guy"</text>
+      </g>
+
+      <!-- Trail of dropped artifacts on floor -->
+      <g opacity="0.15">
+        <rect x="200" y="340" width="15" height="20" rx="1" fill="white" transform="rotate(-10,207,350)"/>
+        <rect x="260" y="350" width="18" height="12" rx="1" fill="#c0392b" transform="rotate(5,269,356)"/>
+        <rect x="330" y="345" width="20" height="15" rx="1" fill="#fff9c4" transform="rotate(-25,340,352)"/>
+        <rect x="450" y="355" width="20" height="13" rx="1" fill="#DAA520" transform="rotate(15,460,361)"/>
+        <rect x="530" y="340" width="14" height="18" rx="1" fill="white" transform="rotate(-8,537,349)"/>
+      </g>
+
+      <!-- Dev still at desk, coding calmly -->
+      <g transform="translate(100, 200)">
+        <circle cx="0" cy="0" r="20" fill="#ffd5b4"/>
+        <rect x="-16" y="22" width="32" height="42" rx="6" fill="#2ecc71"/>
+        <path d="M-6,-3 Q-3,-7 0,-3" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+        <path d="M3,-3 Q6,-7 9,-3" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+        <path d="M-4,8 Q2,14 8,8" fill="none" stroke="#333" stroke-width="2"/>
+        <!-- Laptop -->
+        <rect x="-25" y="62" width="50" height="30" rx="3" fill="#333"/>
+        <rect x="-22" y="65" width="44" height="22" rx="2" fill="#0a2a0a"/>
+        <text x="0" y="80" text-anchor="middle" fill="#2ecc71" font-size="8" font-family="monospace">git commit</text>
+        <!-- Musical notes -->
+        <text x="30" y="-10" fill="#2ecc71" font-size="18" opacity="0.6">♪</text>
+        <text x="45" y="-20" fill="#2ecc71" font-size="14" opacity="0.4">♫</text>
+        <text x="0" y="112" text-anchor="middle" fill="#2ecc71" font-size="10" font-family="Patrick Hand">Dev</text>
+      </g>
+
+      <!-- Cat watching the exodus with amusement -->
+      <g transform="translate(170, 300)">
+        <ellipse cx="0" cy="5" rx="14" ry="10" fill="#f5deb3"/>
+        <circle cx="-7" cy="-5" r="8" fill="#f5deb3"/>
+        <polygon points="-13,-13 -11,-5 -15,-5" fill="#f5deb3"/>
+        <polygon points="-2,-13 -4,-5 0,-5" fill="#f5deb3"/>
+        <!-- Amused eyes watching right -->
+        <circle cx="-8" cy="-6" r="2" fill="#333"/>
+        <circle cx="-4" cy="-6" r="2" fill="#333"/>
+        <circle cx="-7" cy="-7" r="0.7" fill="white"/>
+        <circle cx="-3" cy="-7" r="0.7" fill="white"/>
+        <path d="M-9,0 Q-6,3 -3,0" fill="none" stroke="#333" stroke-width="1"/>
+        <path d="M13,0 Q19,-12 16,-22" fill="none" stroke="#f5deb3" stroke-width="5" stroke-linecap="round"/>
+      </g>
+    </svg>
+    <div class="panel-caption">
+      When the graph becomes the truth, the 南郭先生 leave on their own.
+      No firing needed. No reorg. The structure simply <em>stops hiding them</em>.
+      The developer keeps coding. The cat watches with quiet amusement.
+      <span class="zh">当图谱成为真相，南郭先生们自行离去。无需解雇，无需重组。结构不再庇护他们。开发者继续写代码。猫静静地看着，似笑非笑。</span>
+      <span class="jp">グラフが真実になると、南郭先生たちは自ら去っていく。解雇も再編も不要。構造が彼らを隠さなくなっただけ。開発者はコードを書き続ける。猫は静かに面白そうに眺めている。</span>
+    </div>
+  </div>
+
+  <!-- Panel 6: The Theorem -->
+  <div class="panel">
+    <div class="panel-number">六</div>
+    <svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
+      <rect width="900" height="380" fill="#0f0f1a"/>
+
+      <!-- Two columns -->
+      <!-- Left: Ancient -->
+      <g transform="translate(225, 50)">
+        <text x="0" y="0" text-anchor="middle" fill="#e74c3c" font-size="28" font-family="Ma Shan Zheng">齐宣王</text>
+        <text x="0" y="25" text-anchor="middle" fill="#666" font-size="13" font-family="Patrick Hand">Loved the ensemble</text>
+
+        <!-- Arrow down -->
+        <line x1="0" y1="35" x2="0" y2="65" stroke="#666" stroke-width="1.5"/>
+        <polygon points="-5,60 5,60 0,70" fill="#666"/>
+
+        <text x="0" y="90" text-anchor="middle" fill="#e74c3c" font-size="20" font-family="Ma Shan Zheng">南郭先生 hid</text>
+        <text x="0" y="110" text-anchor="middle" fill="#666" font-size="12" font-family="Patrick Hand">in the noise of 300</text>
+
+        <line x1="0" y1="120" x2="0" y2="150" stroke="#666" stroke-width="1.5"/>
+        <polygon points="-5,145 5,145 0,155" fill="#666"/>
+
+        <text x="0" y="175" text-anchor="middle" fill="#f8b400" font-size="20" font-family="Ma Shan Zheng">齐湣王</text>
+        <text x="0" y="195" text-anchor="middle" fill="#666" font-size="13" font-family="Patrick Hand">Asked for solos</text>
+
+        <line x1="0" y1="205" x2="0" y2="235" stroke="#666" stroke-width="1.5"/>
+        <polygon points="-5,230 5,230 0,240" fill="#666"/>
+
+        <text x="0" y="260" text-anchor="middle" fill="#2ecc71" font-size="18" font-family="Patrick Hand">南郭先生 fled</text>
+      </g>
+
+      <!-- Center divider -->
+      <line x1="450" y1="30" x2="450" y2="320" stroke="#333" stroke-width="1" stroke-dasharray="6,4"/>
+      <text x="450" y="350" text-anchor="middle" fill="#444" font-size="14" font-family="Ma Shan Zheng">同理 — same principle</text>
+
+      <!-- Right: Modern -->
+      <g transform="translate(675, 50)">
+        <text x="0" y="0" text-anchor="middle" fill="#e74c3c" font-size="22" font-family="Patrick Hand">SDLC Process</text>
+        <text x="0" y="25" text-anchor="middle" fill="#666" font-size="13" font-family="Patrick Hand">Loved the ceremony</text>
+
+        <line x1="0" y1="35" x2="0" y2="65" stroke="#666" stroke-width="1.5"/>
+        <polygon points="-5,60 5,60 0,70" fill="#666"/>
+
+        <text x="0" y="90" text-anchor="middle" fill="#e74c3c" font-size="18" font-family="Patrick Hand">南郭先生 hid</text>
+        <text x="0" y="110" text-anchor="middle" fill="#666" font-size="12" font-family="Patrick Hand">in the noise of process</text>
+
+        <line x1="0" y1="120" x2="0" y2="150" stroke="#666" stroke-width="1.5"/>
+        <polygon points="-5,145 5,145 0,155" fill="#666"/>
+
+        <text x="0" y="175" text-anchor="middle" fill="#f8b400" font-size="22" font-family="Patrick Hand">Jarista</text>
+        <text x="0" y="195" text-anchor="middle" fill="#666" font-size="13" font-family="Patrick Hand">Forces the solo</text>
+
+        <line x1="0" y1="205" x2="0" y2="235" stroke="#666" stroke-width="1.5"/>
+        <polygon points="-5,230 5,230 0,240" fill="#666"/>
+
+        <text x="0" y="260" text-anchor="middle" fill="#2ecc71" font-size="18" font-family="Patrick Hand">南郭先生 leave</text>
+      </g>
+
+      <!-- Cat in the center -->
+      <g transform="translate(450, 280)">
+        <ellipse cx="0" cy="5" rx="12" ry="8" fill="#f5deb3"/>
+        <circle cx="-5" cy="-4" r="7" fill="#f5deb3"/>
+        <polygon points="-10,-11 -8,-4 -12,-4" fill="#f5deb3"/>
+        <polygon points="-1,-11 -3,-4 1,-4" fill="#f5deb3"/>
+        <circle cx="-7" cy="-5" r="1.5" fill="#f8b400"/>
+        <circle cx="-3" cy="-5" r="1.5" fill="#f8b400"/>
+        <path d="M11,2 Q17,-8 14,-18" fill="none" stroke="#f5deb3" stroke-width="4" stroke-linecap="round"/>
+      </g>
+    </svg>
+    <div class="panel-caption">
+      Two thousand years apart. Same structure. Same outcome.
+      <em>The ensemble protects the faker. The solo reveals the truth.</em>
+      <br><br>
+      齐湣王 forced solos — and 南郭先生 fled.
+      <br>
+      Jarista forces solos — and the modern 南郭先生 will do the same.
+      <span class="zh">两千年的距离，同样的结构，同样的结局。合奏保护了滥竽充数者。独奏揭示了真相。</span>
+      <span class="jp">二千年の隔たり、同じ構造、同じ結末。合奏は偽者を守り、独奏は真実を暴く。</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="finale">
+  <div class="main">Build the graph. Force the solo. Keep the cat.</div>
+  <div class="zh">结图为谱，南郭立现，虽猫可代之。</div>
+  <div class="zh" style="font-family: 'Noto Sans JP', sans-serif; color: #8888aa; font-size: 0.8em;">グラフを譜に編み、偽者はたちまち現れ、猫でさえ代わりが務まる。</div>
+  <div class="sig">— The Agile Salvation / 敏捷之救赎 / アジャイルの救済</div>
+</div>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.panel').forEach(p => observer.observe(p));
+</script>
+
+</body>
+</html>

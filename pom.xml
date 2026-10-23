@@ -15,12 +15,16 @@
         <module>jarista-project</module>
         <module>jarista-tui</module>
         <module>jarista-fx</module>
+        <module>jarista-web</module>
     </modules>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Homing framework (jarista-web only). A released version in the local .m2
+             (the Homing repo is built/installed on this machine; not on Maven Central). -->
+        <homing.core.version>0.8.3</homing.core.version>
     </properties>
 
 </project>

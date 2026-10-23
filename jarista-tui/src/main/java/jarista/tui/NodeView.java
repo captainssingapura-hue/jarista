@@ -14,7 +14,7 @@ public final class NodeView {
     private final String name;
     private final String fullName;
     private final Class<? extends Stateless> type;
-    private final int specLevel;   // 1–18 for specs, 0 for pieces
+    private final int specLevel;   // 0–18 for specs (0 = vision root), 0 for pieces (distinguished by `piece`)
     private final boolean piece;
     private final List<NodeView> children = new ArrayList<>();
     private final List<String> dependencyNames = new ArrayList<>();
