@@ -62,9 +62,9 @@ public final class GraphModel {
             }
         }
 
-        // Root = the single L1 spec with no parent
+        // Root = the single L0 spec with no parent
         root = viewMap.values().stream()
-                .filter(v -> !v.isPiece() && v.specLevel() == 1)
+                .filter(v -> !v.isPiece() && v.specLevel() == 0)
                 .findFirst()
                 .orElse(null);
 

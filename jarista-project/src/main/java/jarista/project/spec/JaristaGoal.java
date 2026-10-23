@@ -9,11 +9,11 @@ import java.util.List;
 import static jarista.detail.DetailRole.*;
 
 /**
- * L1 — The root.
+ * L1 — The goal, under the L0 vision.
  * Make project management easy and relaxed.
  * Make professional project managers obsolete.
  */
-public class JaristaGoal implements L1_Spec {
+public class JaristaGoal implements L1_Spec<JaristaVision> {
     public static final JaristaGoal INSTANCE = new JaristaGoal();
 
     private static final DetailBuilder _db = new DetailBuilder();

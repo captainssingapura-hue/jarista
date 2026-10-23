@@ -11,7 +11,7 @@ import java.util.List;
 public record NodeInfo(
         String name,
         String fullName,
-        int specLevel,          // 1–18 for specs, 0 for pieces
+        int specLevel,          // 0–18 for specs (0 = vision root), 0 for pieces (distinguished by `piece`)
         boolean piece,
         boolean loadBearing,    // true for leaf specs implementing LoadBearing
         SpecStatus status,      // declared status for load-bearing, derived for organizational, null for pieces

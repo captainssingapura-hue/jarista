@@ -19,24 +19,38 @@ class GraphTreeBuilderTest {
         builder.build();
     }
 
+    /** The L1 goal, sole child of the L0 vision root. */
+    private static TreeItem<NodeInfo> goal() {
+        return builder.rootItem().getChildren().stream()
+                .filter(c -> "JaristaGoal".equals(c.getValue().name()))
+                .findFirst().orElseThrow();
+    }
+
     @Test
-    void rootIsJaristaGoal() {
+    void rootIsJaristaVision() {
         assertNotNull(builder.rootItem());
-        assertEquals("JaristaGoal", builder.rootItem().getValue().name());
-        assertEquals(1, builder.rootItem().getValue().specLevel());
+        assertEquals("JaristaVision", builder.rootItem().getValue().name());
+        assertEquals(0, builder.rootItem().getValue().specLevel());
+    }
+
+    @Test
+    void goalIsSoleChildOfRoot() {
+        assertEquals(1, builder.rootItem().getChildren().size());
+        assertEquals("JaristaGoal", goal().getValue().name());
+        assertEquals(1, goal().getValue().specLevel());
     }
 
     @Test
     void counts() {
-        assertEquals(79, builder.totalNodes());
-        assertEquals(71, builder.specCount());
+        assertEquals(80, builder.totalNodes());
+        assertEquals(72, builder.specCount());
         assertEquals(8, builder.pieceCount());
         assertEquals(0, builder.violationCount());
     }
 
     @Test
-    void sevenEpicsUnderRoot() {
-        long epics = builder.rootItem().getChildren().stream()
+    void sevenEpicsUnderGoal() {
+        long epics = goal().getChildren().stream()
                 .filter(c -> !c.getValue().piece() && c.getValue().specLevel() == 2)
                 .count();
         assertEquals(11, epics);
@@ -45,7 +59,7 @@ class GraphTreeBuilderTest {
     @Test
     void piecesAttachToSpecs() {
         // SpecSkeleton (under CoreTypeSystem) should have ImplSpecSkeleton
-        TreeItem<NodeInfo> cts = builder.rootItem().getChildren().stream()
+        TreeItem<NodeInfo> cts = goal().getChildren().stream()
                 .filter(c -> "CoreTypeSystem".equals(c.getValue().name()))
                 .findFirst().orElseThrow();
         TreeItem<NodeInfo> ss = cts.getChildren().stream()
@@ -59,7 +73,7 @@ class GraphTreeBuilderTest {
 
     @Test
     void dependenciesPopulated() {
-        TreeItem<NodeInfo> bi = builder.rootItem().getChildren().stream()
+        TreeItem<NodeInfo> bi = goal().getChildren().stream()
                 .filter(c -> "BuildIntegration".equals(c.getValue().name()))
                 .findFirst().orElseThrow();
         assertTrue(bi.getValue().dependencies().contains("CoreTypeSystem"));
@@ -69,7 +83,7 @@ class GraphTreeBuilderTest {
     @Test
     void childrenSorted() {
         // Specs should come before pieces, both sorted alphabetically
-        var children = builder.rootItem().getChildren();
+        var children = goal().getChildren();
         boolean seenPiece = false;
         for (var child : children) {
             if (child.getValue().piece()) {

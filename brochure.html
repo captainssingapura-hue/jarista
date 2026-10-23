@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Agile Salvation — Jarista</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg-deep: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-card-hover: #1a1a25;
+    --accent: #f97316;
+    --accent-glow: rgba(249, 115, 22, 0.15);
+    --accent-dim: #c2410c;
+    --text-primary: #f0f0f5;
+    --text-secondary: #8888a0;
+    --text-muted: #55556a;
+    --border: #2a2a3a;
+    --graph-node: #f97316;
+    --graph-spec: #3b82f6;
+    --graph-task: #22c55e;
+    --graph-proxy: #a855f7;
+    --graph-edge: #444460;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 50%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero h1 .highlight {
+    background: linear-gradient(135deg, var(--accent), #fb923c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 300;
+    color: var(--text-secondary);
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-graph {
+    margin-top: 2rem;
+    opacity: 0.9;
+  }
+
+  /* ── Sections ── */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  .lead {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+
+  /* ── Diagnosis cards ── */
+  .diagnosis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .diagnosis-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+  }
+
+  .diagnosis-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent-dim);
+    transform: translateY(-2px);
+  }
+
+  .diagnosis-card .icon {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .diagnosis-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .diagnosis-card p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ── Versus ── */
+  .versus {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: start;
+    margin-top: 3rem;
+  }
+
+  .versus-col { display: flex; flex-direction: column; gap: 1rem; }
+
+  .versus-col.old .versus-item { border-left: 3px solid #ef4444; padding-left: 1.25rem; }
+  .versus-col.new .versus-item { border-left: 3px solid var(--graph-task); padding-left: 1.25rem; }
+
+  .versus-item h4 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+  }
+
+  .versus-col.old .versus-item h4 { color: #ef4444; }
+  .versus-col.new .versus-item h4 { color: var(--graph-task); }
+
+  .versus-item p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+  }
+
+  .versus-divider {
+    width: 1px;
+    background: var(--border);
+    min-height: 100%;
+    align-self: stretch;
+    position: relative;
+  }
+
+  .versus-divider::after {
+    content: 'vs';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--bg-deep);
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.5rem 0;
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 768px) {
+    .versus { grid-template-columns: 1fr; }
+    .versus-divider {
+      width: 100%; height: 1px; min-height: auto;
+    }
+    .versus-divider::after { top: 50%; }
+  }
+
+  /* ── Principles ── */
+  .principles {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .principle {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .principle-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    padding-top: 0.15rem;
+  }
+
+  .principle h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .principle p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* ── Code block ── */
+  .code-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 3rem;
+    overflow-x: auto;
+  }
+
+  .code-block pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+  }
+
+  .code-block .kw { color: var(--accent); }
+  .code-block .type { color: var(--graph-spec); }
+  .code-block .str { color: var(--graph-task); }
+  .code-block .fn { color: #e2e8f0; }
+  .code-block .comment { color: var(--text-muted); font-style: italic; }
+
+  /* ── CTA ── */
+  .cta {
+    text-align: center;
+    padding: 8rem 2rem;
+  }
+
+  .cta h2 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 1rem;
+  }
+
+  .cta p {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .cta-button {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--bg-deep);
+    background: linear-gradient(135deg, var(--accent), #fb923c);
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: 0.05em;
+  }
+
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--accent-glow);
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── Separator ── */
+  .sep {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    border: none;
+    margin: 6rem auto;
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════ HERO ════════════════ -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">The Agile Salvation</div>
+    <h1>Project Management<br>is <span class="highlight">Dead</span></h1>
+    <p class="hero-sub">
+      Long live the graph.<br>
+      Jarista replaces ceremony with structure, tickets with code,<br>
+      and project managers with transparency.
+    </p>
+
+    <!-- Hero graph visualization -->
+    <div class="hero-graph">
+      <svg width="720" height="280" viewBox="0 0 720 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Edges -->
+        <line x1="200" y1="60" x2="360" y2="60" stroke="#444460" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <line x1="200" y1="60" x2="140" y2="160" stroke="#444460" stroke-width="1.5"/>
+        <line x1="200" y1="60" x2="280" y2="160" stroke="#444460" stroke-width="1.5"/>
+        <line x1="360" y1="60" x2="440" y2="160" stroke="#444460" stroke-width="1.5"/>
+        <line x1="360" y1="60" x2="560" y2="160" stroke="#444460" stroke-width="1.5"/>
+        <line x1="140" y1="160" x2="80" y2="240" stroke="#444460" stroke-width="1.5"/>
+        <line x1="140" y1="160" x2="200" y2="240" stroke="#444460" stroke-width="1.5"/>
+        <line x1="440" y1="160" x2="380" y2="240" stroke="#444460" stroke-width="1.5"/>
+        <line x1="440" y1="160" x2="500" y2="240" stroke="#444460" stroke-width="1.5"/>
+        <line x1="560" y1="160" x2="640" y2="240" stroke="#444460" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+        <!-- Spec nodes (blue) -->
+        <circle cx="200" cy="60" r="18" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+        <text x="200" y="65" text-anchor="middle" fill="#3b82f6" font-family="JetBrains Mono, monospace" font-size="10" font-weight="600">SPEC</text>
+
+        <circle cx="360" cy="60" r="18" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+        <text x="360" y="65" text-anchor="middle" fill="#3b82f6" font-family="JetBrains Mono, monospace" font-size="10" font-weight="600">SPEC</text>
+
+        <circle cx="140" cy="160" r="18" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+        <text x="140" y="165" text-anchor="middle" fill="#3b82f6" font-family="JetBrains Mono, monospace" font-size="10" font-weight="600">SPEC</text>
+
+        <!-- Task nodes (green) -->
+        <circle cx="280" cy="160" r="16" fill="#14332b" stroke="#22c55e" stroke-width="2"/>
+        <text x="280" y="165" text-anchor="middle" fill="#22c55e" font-family="JetBrains Mono, monospace" font-size="9" font-weight="600">TASK</text>
+
+        <circle cx="440" cy="160" r="16" fill="#14332b" stroke="#22c55e" stroke-width="2"/>
+        <text x="440" y="165" text-anchor="middle" fill="#22c55e" font-family="JetBrains Mono, monospace" font-size="9" font-weight="600">TASK</text>
+
+        <circle cx="80" cy="240" r="14" fill="#14332b" stroke="#22c55e" stroke-width="2"/>
+        <text x="80" y="244" text-anchor="middle" fill="#22c55e" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">TASK</text>
+
+        <circle cx="200" cy="240" r="14" fill="#14332b" stroke="#22c55e" stroke-width="2"/>
+        <text x="200" y="244" text-anchor="middle" fill="#22c55e" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">TASK</text>
+
+        <circle cx="380" cy="240" r="14" fill="#14332b" stroke="#22c55e" stroke-width="2"/>
+        <text x="380" y="244" text-anchor="middle" fill="#22c55e" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">TASK</text>
+
+        <circle cx="500" cy="240" r="14" fill="#14332b" stroke="#22c55e" stroke-width="2"/>
+        <text x="500" y="244" text-anchor="middle" fill="#22c55e" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">TASK</text>
+
+        <!-- Proxy node (purple) -->
+        <circle cx="560" cy="160" r="16" fill="#2d1f4e" stroke="#a855f7" stroke-width="2"/>
+        <text x="560" y="165" text-anchor="middle" fill="#a855f7" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">PROXY</text>
+
+        <!-- Remote node (purple, dimmer) -->
+        <circle cx="640" cy="240" r="14" fill="#1a1528" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>
+        <text x="640" y="244" text-anchor="middle" fill="#a855f7" font-family="JetBrains Mono, monospace" font-size="7" font-weight="600" opacity="0.6">REMOTE</text>
+
+        <!-- Done checkmarks -->
+        <text x="80" y="268" text-anchor="middle" fill="#22c55e" font-size="11">&#10003;</text>
+        <text x="200" y="268" text-anchor="middle" fill="#22c55e" font-size="11">&#10003;</text>
+        <text x="500" y="268" text-anchor="middle" fill="#22c55e" font-size="11">&#10003;</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ DIAGNOSIS ════════════════ -->
+<section>
+  <div class="section-label">The Diagnosis</div>
+  <h2>What went wrong with Agile</h2>
+  <p class="lead">
+    Twenty-five years ago, a manifesto valued people over processes and working software
+    over documentation. Then an industry turned those values into processes and documentation.
+  </p>
+
+  <div class="diagnosis">
+    <div class="diagnosis-card">
+      <span class="icon">&#9888;</span>
+      <h3>Ceremony replaced collaboration</h3>
+      <p>Sprint planning, refinement, retrospectives, daily standups.
+         The meetings meant to enable agility became the process that prevents it.</p>
+    </div>
+    <div class="diagnosis-card">
+      <span class="icon">&#9888;</span>
+      <h3>Tickets replaced understanding</h3>
+      <p>Requirements go into documents. Documents become epics. Epics become stories.
+         Stories get estimated. By the time work starts, the original intent is three translations away.</p>
+    </div>
+    <div class="diagnosis-card">
+      <span class="icon">&#9888;</span>
+      <h3>Charts replaced honesty</h3>
+      <p>Velocity tracking and burndowns exist to answer "whose fault is it?"
+         — not to help anyone ship better software. This is accountability theater.</p>
+    </div>
+    <div class="diagnosis-card">
+      <span class="icon">&#9888;</span>
+      <h3>A translation class emerged</h3>
+      <p>Professional project managers sit between stakeholders and developers,
+         translating in both directions. Both sides would be better off talking directly.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ════════════════ VERSUS ════════════════ -->
+<section>
+  <div class="section-label">The Shift</div>
+  <h2>Not better tooling. Different structure.</h2>
+  <p class="lead">
+    Jarista does not optimize the current paradigm. It replaces it.
+  </p>
+
+  <div class="versus">
+    <div class="versus-col old">
+      <div class="versus-item">
+        <h4>Flat ticket board</h4>
+        <p>Cards in columns. No structural relationships. Context lives in people's heads.</p>
+      </div>
+      <div class="versus-item">
+        <h4>PM tool as separate system</h4>
+        <p>State drifts from code within days. Someone must manually reconcile.</p>
+      </div>
+      <div class="versus-item">
+        <h4>Velocity and burndowns</h4>
+        <p>Prediction theater. "We estimated 40 points" is not an engineering insight.</p>
+      </div>
+      <div class="versus-item">
+        <h4>Cross-team dependencies via Slack</h4>
+        <p>Tribal knowledge. Someone remembers. Or doesn't.</p>
+      </div>
+      <div class="versus-item">
+        <h4>Status reported by humans</h4>
+        <p>Someone writes a summary. It is already stale when sent.</p>
+      </div>
+    </div>
+
+    <div class="versus-divider"></div>
+
+    <div class="versus-col new">
+      <div class="versus-item">
+        <h4>Living graph</h4>
+        <p>Multi-level specs and tasks with typed edges. Structure is explicit and queryable.</p>
+      </div>
+      <div class="versus-item">
+        <h4>Graph as sibling to source</h4>
+        <p>Versions, branches, merges with your code. Reviewed in PRs. Cannot drift.</p>
+      </div>
+      <div class="versus-item">
+        <h4>Structural progress</h4>
+        <p>Specs are fulfilled or they aren't. The graph is the status. No interpretation needed.</p>
+      </div>
+      <div class="versus-item">
+        <h4>Proxy nodes</h4>
+        <p>A dependency is a node in your graph pointing to theirs. Visible. Trackable. No meetings.</p>
+      </div>
+      <div class="versus-item">
+        <h4>Status computed by AI</h4>
+        <p>The graph is semantically rich. AI reads it and answers questions. No one writes a report.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ════════════════ CORE IDEAS ════════════════ -->
+<section>
+  <div class="section-label">Core Architecture</div>
+  <h2>Three ideas. Everything else follows.</h2>
+
+  <div class="principles">
+    <div class="principle">
+      <div class="principle-num">01</div>
+      <div>
+        <h3>Codified multi-level graph</h3>
+        <p>Specifications and tasks are Java records — compiled, type-checked, connected by
+           typed edges. The graph captures what defines what, what fulfills what, and what
+           depends on what. Coverage gaps are structural, not guesswork.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="principle-num">02</div>
+      <div>
+        <h3>PM and code as siblings</h3>
+        <p>The graph lives in <code style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.85em;">.jarista/</code>
+           next to <code style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.85em;">src/</code>.
+           It branches when you branch. It merges when you merge. It is reviewed in your pull requests.
+           The plan cannot drift from the code because it is subject to the same version control.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="principle-num">03</div>
+      <div>
+        <h3>Proxy nodes for cross-team collaboration</h3>
+        <p>To depend on another team's work, create a proxy node that references a node in their graph.
+           No shared server. No shared database. No shared process.
+           Just a typed reference that caches remote state and syncs on demand.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code example -->
+  <div class="code-block">
+    <pre><span class="comment">// This is your project plan. It compiles.</span>
+
+<span class="kw">new</span> <span class="type">SpecNode</span>(<span class="str">"oauth-flow"</span>, <span class="str">"OAuth 2.0 login flow"</span>,
+    <span class="fn">edges</span>(
+        <span class="fn">definedBy</span>(<span class="str">"epic-user-auth"</span>),
+        <span class="fn">fulfilledBy</span>(<span class="str">"task-impl-token-refresh"</span>),
+        <span class="fn">dependsOn</span>(<span class="fn">proxy</span>(<span class="str">"team-b"</span>, <span class="str">"spec-oauth-provider"</span>))
+    )
+);
+
+<span class="comment">// Dangling reference? Compile error.</span>
+<span class="comment">// Spec with no fulfilling task? Graph query.</span>
+<span class="comment">// Status of team-b's OAuth provider? Cached in the proxy.</span></pre>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ════════════════ VALUES ════════════════ -->
+<section>
+  <div class="section-label">What We Value</div>
+  <h2>Over and above</h2>
+
+  <div class="principles" style="margin-top:2rem;">
+    <div class="principle">
+      <div class="principle-num" style="font-size:1.2rem; color:var(--graph-spec);">&#9670;</div>
+      <div>
+        <h3>The graph <span style="color:var(--text-muted);font-weight:400;">over</span> the board</h3>
+        <p>A living, multi-level structure of specifications and tasks — over a flat list of cards moved between columns.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="principle-num" style="font-size:1.2rem; color:var(--graph-spec);">&#9670;</div>
+      <div>
+        <h3>Compilation <span style="color:var(--text-muted);font-weight:400;">over</span> ceremony</h3>
+        <p>A plan validated by the compiler — over a plan validated by a meeting.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="principle-num" style="font-size:1.2rem; color:var(--graph-spec);">&#9670;</div>
+      <div>
+        <h3>Direct access <span style="color:var(--text-muted);font-weight:400;">over</span> delegation</h3>
+        <p>Stakeholders who touch the graph — over stakeholders who receive filtered reports.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="principle-num" style="font-size:1.2rem; color:var(--graph-spec);">&#9670;</div>
+      <div>
+        <h3>Transparency <span style="color:var(--text-muted);font-weight:400;">over</span> performance</h3>
+        <p>A graph anyone can query — over a status email someone had to write.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="principle-num" style="font-size:1.2rem; color:var(--graph-spec);">&#9670;</div>
+      <div>
+        <h3>Acknowledgment <span style="color:var(--text-muted);font-weight:400;">over</span> velocity</h3>
+        <p>An honest "this is stuck because..." — over a chart that says we are on track when we are not.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ════════════════ CTA ════════════════ -->
+<div class="cta">
+  <h2>This is <span style="background:linear-gradient(135deg,var(--accent),#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">The Agile Salvation</span></h2>
+  <p>For developers who would rather write code than update tickets.
+     For stakeholders who want truth, not narrative.
+     For teams ready to try what Agile was supposed to be.</p>
+  <a href="https://github.com" class="cta-button">JARISTA ON GITHUB</a>
+</div>
+
+<footer>
+  The Agile Salvation &mdash; Jarista Project &bull; 2026
+</footer>
+
+</body>
+</html>

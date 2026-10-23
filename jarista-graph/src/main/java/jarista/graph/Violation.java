@@ -22,7 +22,7 @@ public sealed interface Violation {
     record OrphanSpec(Class<? extends Stateless> type) implements Violation {
         @Override
         public String toString() {
-            return type.getSimpleName() + " is not reachable from any L1_Spec root";
+            return type.getSimpleName() + " is not reachable from any L0_Spec root";
         }
     }
 

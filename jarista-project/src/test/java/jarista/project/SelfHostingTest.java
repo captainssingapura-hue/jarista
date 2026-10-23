@@ -30,7 +30,13 @@ class SelfHostingTest {
     }
 
     @Test
-    void l1RootExists() {
+    void l0RootExists() {
+        assertNotNull(JaristaVision.INSTANCE);
+        assertInstanceOf(Stateless.class, JaristaVision.INSTANCE);
+    }
+
+    @Test
+    void l1GoalExists() {
         assertNotNull(JaristaGoal.INSTANCE);
         assertInstanceOf(Stateless.class, JaristaGoal.INSTANCE);
     }
@@ -99,6 +105,7 @@ class SelfHostingTest {
 
     @Test
     void organizationalSpecsAreNotLoadBearing() {
+        assertFalse(JaristaVision.INSTANCE instanceof LoadBearing);
         assertFalse(JaristaGoal.INSTANCE instanceof LoadBearing);
         assertFalse(CoreTypeSystem.INSTANCE instanceof LoadBearing);
         assertFalse(ContentManagement.INSTANCE instanceof LoadBearing);
@@ -114,11 +121,11 @@ class SelfHostingTest {
 
     @Test
     void specCount() {
-        // 1 L1 + 11 L2 + 51 L3 + 8 L4 = 71 specs
+        // 1 L0 + 1 L1 + 11 L2 + 51 L3 + 8 L4 = 72 specs
         // 8 L1 pieces
-        // Total: 79 Stateless nodes in the project graph
+        // Total: 80 Stateless nodes in the project graph
         var validator = new GraphValidator();
         List<Violation> violations = validator.validate("jarista.project");
-        assertEquals(0, violations.size(), "All 77 nodes should pass validation");
+        assertEquals(0, violations.size(), "All 80 nodes should pass validation");
     }
 }

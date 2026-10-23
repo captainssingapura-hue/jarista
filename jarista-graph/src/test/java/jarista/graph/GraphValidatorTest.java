@@ -1,6 +1,7 @@
 package jarista.graph;
 
 import jarista.Stateless;
+import jarista.spec.L0_Spec;
 import jarista.spec.L1_Spec;
 import jarista.spec.L2_Spec;
 import jarista.spec.L3_Spec;
@@ -18,7 +19,11 @@ class GraphValidatorTest {
 
     // ── Well-formed graph ──
 
-    static class Goal implements L1_Spec {
+    static class Vision implements L0_Spec {
+        public static final Vision INSTANCE = new Vision();
+    }
+
+    static class Goal implements L1_Spec<Vision> {
         public static final Goal INSTANCE = new Goal();
     }
 
@@ -41,7 +46,7 @@ class GraphValidatorTest {
 
     // ── Missing INSTANCE ──
 
-    static class BadSpec implements L1_Spec {
+    static class BadSpec implements L1_Spec<Vision> {
         // no INSTANCE field
     }
 

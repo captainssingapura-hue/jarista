@@ -89,9 +89,9 @@ public final class GraphTreeBuilder {
                     .thenComparing(i -> i.getValue().name()));
         }
 
-        // root = the L1 spec with no parent
+        // root = the L0 spec with no parent
         rootItem = itemMap.values().stream()
-                .filter(i -> !i.getValue().piece() && i.getValue().specLevel() == 1)
+                .filter(i -> !i.getValue().piece() && i.getValue().specLevel() == 0)
                 .findFirst().orElse(null);
     }
 

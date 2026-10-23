@@ -26,7 +26,7 @@ public final class TuiMain {
         model.scan();
 
         if (model.root() == null) {
-            System.err.println("No L1 root spec found in packages: "
+            System.err.println("No L0 root spec found in packages: "
                                + String.join(", ", args));
             System.exit(2);
         }
