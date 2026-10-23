@@ -42,9 +42,9 @@ class GraphTreeBuilderTest {
 
     @Test
     void counts() {
-        assertEquals(80, builder.totalNodes());
-        assertEquals(72, builder.specCount());
-        assertEquals(8, builder.pieceCount());
+        assertEquals(82, builder.totalNodes());
+        assertEquals(73, builder.specCount());
+        assertEquals(9, builder.pieceCount());
         assertEquals(0, builder.violationCount());
     }
 

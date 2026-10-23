@@ -57,7 +57,7 @@ class GraphModelTest {
         long features = cts.children().stream()
                 .filter(c -> !c.isPiece() && c.specLevel() == 3)
                 .count();
-        assertEquals(5, features, "CoreTypeSystem has 5 L3 features");
+        assertEquals(6, features, "CoreTypeSystem has 6 L3 features");
     }
 
     @Test
@@ -80,7 +80,7 @@ class GraphModelTest {
 
     @Test
     void totalNodeCount() {
-        assertEquals(80, model.totalNodes(), "72 specs + 8 pieces = 80");
+        assertEquals(82, model.totalNodes(), "73 specs + 9 pieces = 82");
     }
 
     @Test

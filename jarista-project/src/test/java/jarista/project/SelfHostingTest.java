@@ -7,6 +7,8 @@ import jarista.spec.LoadBearing;
 import jarista.spec.SpecStatus;
 import jarista.project.spec.*;
 import jarista.project.piece.*;
+import jarista.link.ImplementationFor;
+import jarista.project.link.JaristaLinkage;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -92,6 +94,26 @@ class SelfHostingTest {
         assertInstanceOf(Stateless.class, ImplScanner.INSTANCE);
         assertInstanceOf(Stateless.class, ImplInstanceEnforcer.INSTANCE);
         assertInstanceOf(Stateless.class, ImplCycleDetector.INSTANCE);
+        assertInstanceOf(Stateless.class, ImplImplementationFor.INSTANCE);
+    }
+
+    @Test
+    void linkageConnectsImplementationsToSpecsNonIntrusively() {
+        List<ImplementationFor<?, ?>> links = JaristaLinkage.INSTANCE.links();
+        assertFalse(links.isEmpty(), "Jarista links its own core classes to its specs");
+
+        for (var link : links) {
+            // every spec is a real node of the graph …
+            assertInstanceOf(Stateless.class, link.spec(),
+                    link.implementation().getSimpleName() + " must link to a spec node");
+            // … and the implementation class knows nothing of jarista.project
+            assertFalse(link.implementation().getName().startsWith("jarista.project."),
+                    link.implementation().getName() + " is a core class, not a project node");
+        }
+
+        // the linkage self-links: ImplementationFor is the implementation of ImplementationLinkage
+        assertTrue(links.stream().anyMatch(l ->
+                l.implementation() == ImplementationFor.class && l.spec() == ImplementationLinkage.INSTANCE));
     }
 
     @Test
@@ -121,11 +143,11 @@ class SelfHostingTest {
 
     @Test
     void specCount() {
-        // 1 L0 + 1 L1 + 11 L2 + 51 L3 + 8 L4 = 72 specs
-        // 8 L1 pieces
-        // Total: 80 Stateless nodes in the project graph
+        // 1 L0 + 1 L1 + 11 L2 + 52 L3 + 8 L4 = 73 specs
+        // 9 L1 pieces
+        // Total: 82 Stateless nodes in the project graph (JaristaLinkage is not a node)
         var validator = new GraphValidator();
         List<Violation> violations = validator.validate("jarista.project");
-        assertEquals(0, violations.size(), "All 80 nodes should pass validation");
+        assertEquals(0, violations.size(), "All 82 nodes should pass validation");
     }
 }

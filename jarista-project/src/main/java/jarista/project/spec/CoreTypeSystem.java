@@ -9,7 +9,8 @@ import java.util.List;
 import static jarista.detail.DetailRole.*;
 
 /**
- * L2 — The compiled types: Stateless, Spec levels, Piece levels, @ForFeature, state interfaces.
+ * L2 — The compiled types: Stateless, Spec levels, Piece levels, @ForFeature,
+ * ImplementationFor linkage, state interfaces.
  * The skeleton that makes the graph expressible in pure Java.
  */
 public class CoreTypeSystem implements L2_Spec<JaristaGoal> {
@@ -22,7 +23,8 @@ public class CoreTypeSystem implements L2_Spec<JaristaGoal> {
         return List.of(
             _db.text()
                 .ln("The foundational type hierarchy: Stateless marker interface,")
-                .ln("L1–L18 Spec levels, L1–L8 Piece levels, and @ForFeature annotation.")
+                .ln("L0–L18 Spec levels, L1–L8 Piece levels, the @ForFeature annotation,")
+                .ln("and the non-intrusive ImplementationFor linkage.")
                 .ln("Generics encode the parent relationship — the compiler enforces the tree.")
             .as(DESCRIPTION),
 
