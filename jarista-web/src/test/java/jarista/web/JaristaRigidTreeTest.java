@@ -18,8 +18,8 @@ class JaristaRigidTreeTest {
     @Test
     void oneRigidNodePerGraphNode() {
         List<RigidNode<GraphNode>> nodes = JaristaRigidTree.nodes();
-        // 72 specs + 8 pieces = 80 source nodes; no synthetic nodes in the rigid tree.
-        assertEquals(80, nodes.size(), "expected one RigidNode per graph node");
+        // 73 specs + 9 pieces = 82 source nodes; no synthetic nodes in the rigid tree.
+        assertEquals(82, nodes.size(), "expected one RigidNode per graph node");
 
         RigidNode<GraphNode> root = nodes.get(0);
         assertNull(root.parent(), "first node is the root");
