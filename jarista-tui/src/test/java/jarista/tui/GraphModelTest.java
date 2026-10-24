@@ -79,6 +79,22 @@ class GraphModelTest {
     }
 
     @Test
+    void pieceStateIsSurfaced() {
+        NodeView cts = goal().children().stream()
+                .filter(c -> "CoreTypeSystem".equals(c.name()))
+                .findFirst().orElseThrow();
+        NodeView specSkel = cts.children().stream()
+                .filter(c -> "SpecSkeleton".equals(c.name()))
+                .findFirst().orElseThrow();
+        NodeView piece = specSkel.children().stream()
+                .filter(NodeView::isPiece).findFirst().orElseThrow();
+
+        assertEquals(Boolean.TRUE, piece.done(), "ImplSpecSkeleton declares done()=true");
+        assertEquals("Piece ✓", piece.levelTag());
+        assertNull(specSkel.done(), "specs carry no piece state");
+    }
+
+    @Test
     void totalNodeCount() {
         assertEquals(82, model.totalNodes(), "73 specs + 9 pieces = 82");
     }

@@ -169,6 +169,17 @@ public final class GraphTui {
                 detail.append("  deps: ")
                       .append(String.join(", ", sel.node().dependencyNames()));
             }
+            if (sel.node().isPiece()) {
+                detail.append("  done: ")
+                      .append(Boolean.TRUE.equals(sel.node().done()) ? "yes" : "no");
+                if (!sel.node().verificationTarget().isBlank()) {
+                    detail.append("  verify: ").append(sel.node().verificationTarget());
+                }
+                if (!sel.node().outOfScope().isEmpty()) {
+                    detail.append("  out-of-scope: ")
+                          .append(String.join("; ", sel.node().outOfScope()));
+                }
+            }
             tg.setForegroundColor(TextColor.ANSI.CYAN);
             tg.putString(0, footerY + 1, truncate(detail.toString(), w));
         }
@@ -290,7 +301,10 @@ public final class GraphTui {
     }
 
     private static TextColor colorForLevel(NodeView node) {
-        if (node.isPiece()) return TextColor.ANSI.YELLOW;
+        // pieces: green once done, yellow while open
+        if (node.isPiece()) {
+            return Boolean.TRUE.equals(node.done()) ? TextColor.ANSI.GREEN : TextColor.ANSI.YELLOW;
+        }
         return switch (node.specLevel()) {
             case 1  -> TextColor.ANSI.WHITE;
             case 2  -> TextColor.ANSI.CYAN;

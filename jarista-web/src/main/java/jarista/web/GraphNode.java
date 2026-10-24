@@ -4,6 +4,7 @@ import jarista.Stateless;
 import jarista.detail.DetailRole;
 import jarista.detail.RoledDetail;
 import jarista.graph.GraphScanner;
+import jarista.piece.PieceBase;
 import jarista.spec.LoadBearing;
 
 import java.lang.reflect.Field;
@@ -44,6 +45,9 @@ public final class GraphNode {
     private final String status;                 // LoadBearing status name, or null
     private final List<RoledDetail> details;
     private final List<String> deps;
+    private final Boolean done;                  // pieces: done(); null for specs
+    private final List<String> outOfScope;       // pieces: what not to touch
+    private final String verificationTarget;     // pieces: how to prove it; "" if none
     private final List<GraphNode> children = new ArrayList<>();
 
     private GraphNode(Class<?> cls) {
@@ -55,6 +59,10 @@ public final class GraphNode {
         this.details = inst == null ? List.of() : inst.details();
         this.status = (inst instanceof LoadBearing lb) ? lb.status().name() : null;
         this.deps = dependenciesOf(inst);
+        PieceBase pb = (piece && inst instanceof PieceBase p) ? p : null;
+        this.done = pb == null ? null : pb.done();
+        this.outOfScope = pb == null ? List.of() : pb.outOfScope();
+        this.verificationTarget = pb == null ? "" : pb.verificationTarget();
     }
 
     // ── scan ─────────────────────────────────────────────────────
@@ -99,12 +107,16 @@ public final class GraphNode {
     public List<String> deps()           { return deps; }
     public List<GraphNode> children()    { return children; }
     public boolean hasChildren()         { return !children.isEmpty(); }
+    public Boolean done()                { return done; }
+    public List<String> outOfScope()     { return outOfScope; }
+    public String verificationTarget()   { return verificationTarget; }
 
     public String name()     { return cls.getSimpleName(); }
     public String fqn()      { return cls.getName(); }
     public String levelTag() { return piece ? "Piece" : "L" + level; }
 
     public String badge() {
+        if (piece && done != null) return levelTag() + " · " + (done ? "DONE" : "OPEN");
         return status == null ? levelTag() : levelTag() + " · " + status;
     }
 
@@ -136,6 +148,15 @@ public final class GraphNode {
         sb.append("**Type:** ").append(piece ? "Piece (L" + level + ")" : "Spec (L" + level + ")");
         if (status != null) sb.append("  \n**Status:** ").append(status);
         if (!deps.isEmpty()) sb.append("  \n**Depends on:** ").append(String.join(", ", deps));
+        if (piece) {
+            sb.append("  \n**Done:** ").append(Boolean.TRUE.equals(done) ? "yes ✓" : "no ○");
+            sb.append("  \n**Verify:** ").append(verificationTarget.isBlank()
+                    ? "_(no automated target — rely on EXPECTATION details)_"
+                    : "`" + verificationTarget + "`");
+            if (!outOfScope.isEmpty()) {
+                sb.append("  \n**Out of scope:** ").append(String.join("; ", outOfScope));
+            }
+        }
         return sb.toString();
     }
 
