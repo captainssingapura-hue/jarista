@@ -138,6 +138,28 @@ class GraphValidatorTest {
         assertTrue(hasNonLeaf, "Expected PieceTargetsNonLeaf but got: " + violations);
     }
 
+    // ── Parked spec with a finished piece ──
+
+    static class ParkedSpec implements L3_Spec<Epic>, LoadBearing {
+        public static final ParkedSpec INSTANCE = new ParkedSpec();
+        @Override public SpecStatus status() { return SpecStatus.PARKED; }
+    }
+
+    static class FinishedUnderParked implements L1_Piece<ParkedSpec> {
+        public static final FinishedUnderParked INSTANCE = new FinishedUnderParked();
+        @Override public boolean done() { return true; }
+    }
+
+    @Test
+    void donePieceUnderParkedSpecIsAMismatch() {
+        // only DONE agrees with done()=true; PARKED/ABANDONED are "not done" like PLANNED
+        var validator = new GraphValidator();
+        List<Violation> violations = validator.validate(List.of(
+                Goal.class, Epic.class, ParkedSpec.class, FinishedUnderParked.class));
+        assertTrue(violations.stream().anyMatch(v -> v instanceof Violation.StatusMismatch),
+                "Expected StatusMismatch but got: " + violations);
+    }
+
     @Test
     void statusMismatchDetected() {
         var validator = new GraphValidator();

@@ -1,8 +1,11 @@
 package jarista.fx;
 
+import jarista.spec.SpecStatus;
 import javafx.scene.control.TreeItem;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,6 +27,18 @@ class GraphTreeBuilderTest {
         return builder.rootItem().getChildren().stream()
                 .filter(c -> "JaristaGoal".equals(c.getValue().name()))
                 .findFirst().orElseThrow();
+    }
+
+    @Test
+    void parkedAndAbandonedLeavesStayOutOfTheRollUp() {
+        // shelved work must neither make a parent look active nor hold it back from DONE
+        assertEquals(SpecStatus.DONE,        GraphTreeBuilder.derive(List.of(SpecStatus.DONE, SpecStatus.PARKED)));
+        assertEquals(SpecStatus.DONE,        GraphTreeBuilder.derive(List.of(SpecStatus.DONE, SpecStatus.ABANDONED)));
+        assertEquals(SpecStatus.PLANNED,     GraphTreeBuilder.derive(List.of(SpecStatus.PLANNED, SpecStatus.PARKED)));
+        assertEquals(SpecStatus.IN_PROGRESS, GraphTreeBuilder.derive(List.of(SpecStatus.PLANNED, SpecStatus.DONE, SpecStatus.ABANDONED)));
+        // nothing live left: the parent inherits, parked winning over abandoned
+        assertEquals(SpecStatus.PARKED,      GraphTreeBuilder.derive(List.of(SpecStatus.PARKED, SpecStatus.ABANDONED)));
+        assertEquals(SpecStatus.ABANDONED,   GraphTreeBuilder.derive(List.of(SpecStatus.ABANDONED)));
     }
 
     @Test
