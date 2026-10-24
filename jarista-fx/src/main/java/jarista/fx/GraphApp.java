@@ -126,11 +126,12 @@ public class GraphApp extends Application {
                             + " -fx-font-size: 14;");
                 icon.setMinWidth(18);
 
-                // status dot: ● for load-bearing, ◌ for derived organizational
+                // status dot: spec status for specs; done (green) / open (peach) for pieces
+                boolean hasDot = item.status() != null || item.done() != null;
                 Circle statusDot = new Circle(4);
                 statusDot.setStyle("-fx-fill: " + statusColor(item) + ";");
-                statusDot.setVisible(item.status() != null);
-                statusDot.setManaged(item.status() != null);
+                statusDot.setVisible(hasDot);
+                statusDot.setManaged(hasDot);
 
                 Label name = new Label(item.name());
                 name.setStyle("-fx-text-fill: " + TEXT + ";"
@@ -140,7 +141,9 @@ public class GraphApp extends Application {
                 Region spacer = new Region();
                 HBox.setHgrow(spacer, Priority.ALWAYS);
 
-                Label tag = new Label(item.levelTag());
+                Label tag = new Label(item.piece()
+                        ? item.levelTag() + " " + item.doneMark()
+                        : item.levelTag());
                 tag.setStyle("-fx-text-fill: " + MUTED + "; -fx-font-size: 11;");
 
                 HBox row = new HBox(6, icon, statusDot, name, spacer, tag);
@@ -226,6 +229,9 @@ public class GraphApp extends Application {
                     YELLOW);
         }
 
+        // piece state: done / verification / scope
+        if (info.piece()) addPieceState(info);
+
         // ── details by role ───────────────────────────────────────
         if (!info.details().isEmpty()) {
             detailContent.getChildren().add(new Separator());
@@ -248,7 +254,7 @@ public class GraphApp extends Application {
         }
 
         // empty leaf message
-        if (info.details().isEmpty() && info.dependencies().isEmpty()
+        if (!info.piece() && info.details().isEmpty() && info.dependencies().isEmpty()
                 && sel.getChildren().isEmpty()) {
             Label leaf = new Label("Leaf node — no details, children, or dependencies");
             leaf.setStyle("-fx-text-fill: " + MUTED + "; -fx-font-style: italic;");
@@ -334,6 +340,42 @@ public class GraphApp extends Application {
         }
     }
 
+    /** The three things that make a piece a piece: done, how to verify, what not to touch. */
+    private void addPieceState(NodeInfo info) {
+        Label h = new Label("Piece state");
+        h.setStyle("-fx-font-size: 13; -fx-font-weight: bold;"
+                 + " -fx-text-fill: " + SUB + "; -fx-padding: 8 0 4 0;");
+        detailContent.getChildren().add(h);
+
+        boolean done = Boolean.TRUE.equals(info.done());
+        Label doneLabel = new Label(done ? "✓ done" : "○ open");
+        doneLabel.setStyle("-fx-text-fill: " + (done ? GREEN : PEACH) + ";"
+                         + " -fx-padding: 2 0 2 14; -fx-font-size: 13; -fx-font-weight: bold;");
+        detailContent.getChildren().add(doneLabel);
+
+        String target = info.verificationTarget();
+        Label verify = new Label(target == null || target.isBlank()
+                ? "verify: (no automated target — rely on EXPECTATION details)"
+                : "verify: " + target);
+        verify.setStyle("-fx-text-fill: " + BLUE + "; -fx-padding: 2 0 2 14;"
+                      + " -fx-font-size: 12; -fx-font-family: monospace;");
+        verify.setWrapText(true);
+        detailContent.getChildren().add(verify);
+
+        if (!info.outOfScope().isEmpty()) {
+            Label scopeHeader = new Label("out of scope:");
+            scopeHeader.setStyle("-fx-text-fill: " + SUB + "; -fx-padding: 4 0 2 14; -fx-font-size: 12;");
+            detailContent.getChildren().add(scopeHeader);
+            for (String s : info.outOfScope()) {
+                Label l = new Label("⊘ " + s);
+                l.setStyle("-fx-text-fill: " + YELLOW + "; -fx-padding: 1 0 1 28;"
+                         + " -fx-font-size: 12; -fx-font-family: monospace;");
+                l.setWrapText(true);
+                detailContent.getChildren().add(l);
+            }
+        }
+    }
+
     // ── status bar ───────────────────────────────────────────────
 
     private HBox buildStatusBar(String[] packages) {
@@ -360,6 +402,7 @@ public class GraphApp extends Application {
     }
 
     static String statusColor(NodeInfo info) {
+        if (info.piece()) return Boolean.TRUE.equals(info.done()) ? GREEN : PEACH;
         if (info.status() == null) return MUTED;
         return switch (info.status()) {
             case DONE        -> GREEN;

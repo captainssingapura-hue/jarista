@@ -72,6 +72,26 @@ class GraphTreeBuilderTest {
     }
 
     @Test
+    void pieceStateIsSurfacedAndSpecsHaveNone() {
+        TreeItem<NodeInfo> cts = goal().getChildren().stream()
+                .filter(c -> "CoreTypeSystem".equals(c.getValue().name()))
+                .findFirst().orElseThrow();
+        TreeItem<NodeInfo> ss = cts.getChildren().stream()
+                .filter(c -> "SpecSkeleton".equals(c.getValue().name()))
+                .findFirst().orElseThrow();
+        NodeInfo piece = ss.getChildren().get(0).getValue();
+
+        assertEquals(Boolean.TRUE, piece.done(), "ImplSpecSkeleton declares done()=true");
+        assertEquals("✓", piece.doneMark());
+        assertNotNull(piece.outOfScope());
+        assertNotNull(piece.verificationTarget());
+
+        // specs carry no piece state
+        assertNull(ss.getValue().done());
+        assertEquals("", ss.getValue().doneMark());
+    }
+
+    @Test
     void dependenciesPopulated() {
         TreeItem<NodeInfo> bi = goal().getChildren().stream()
                 .filter(c -> "BuildIntegration".equals(c.getValue().name()))

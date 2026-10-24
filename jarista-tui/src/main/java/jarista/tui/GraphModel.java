@@ -4,6 +4,7 @@ import jarista.Stateless;
 import jarista.graph.GraphScanner;
 import jarista.graph.GraphValidator;
 import jarista.graph.Violation;
+import jarista.piece.PieceBase;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -47,6 +48,7 @@ public final class GraphModel {
                     isPiece ? 0 : sLevel, isPiece);
 
             readDependencies(cls, view);
+            if (isPiece) readPieceState(cls, view);
             viewMap.put(cls, view);
 
             Class<?> parent = extractParent(cls);
@@ -130,6 +132,18 @@ public final class GraphModel {
             // node has no INSTANCE or no dependencies() — that's fine
         } catch (Exception e) {
             // reflection failure — skip silently
+        }
+    }
+
+    /** Read done() / outOfScope() / verificationTarget() from a piece's INSTANCE. */
+    private static void readPieceState(Class<?> cls, NodeView view) {
+        try {
+            Field f = cls.getField("INSTANCE");
+            if (f.get(null) instanceof PieceBase pb) {
+                view.pieceState(pb.done(), pb.outOfScope(), pb.verificationTarget());
+            }
+        } catch (Exception e) {
+            // no INSTANCE or reflection failure — leave state unknown
         }
     }
 }

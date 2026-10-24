@@ -4,6 +4,7 @@ import jarista.Stateless;
 import jarista.detail.RoledDetail;
 import jarista.graph.GraphScanner;
 import jarista.graph.GraphValidator;
+import jarista.piece.PieceBase;
 import jarista.spec.LoadBearing;
 import jarista.spec.SpecStatus;
 import javafx.scene.control.TreeItem;
@@ -53,11 +54,18 @@ public final class GraphTreeBuilder {
             boolean isLoadBearing = instance instanceof LoadBearing;
             SpecStatus declaredStatus = (instance instanceof LoadBearing lb) ? lb.status() : null;
 
+            // piece state — done / scope / verification — only pieces carry it
+            PieceBase pb = (isPiece && instance instanceof PieceBase p) ? p : null;
+            Boolean done = pb == null ? null : pb.done();
+            List<String> outOfScope = pb == null ? List.of() : pb.outOfScope();
+            String verificationTarget = pb == null ? "" : pb.verificationTarget();
+
             var info = new NodeInfo(
                     cls.getSimpleName(), cls.getName(),
                     isPiece ? 0 : sLevel, isPiece,
                     isLoadBearing, isPiece ? null : declaredStatus,
-                    readDependencies(cls), readDetails(cls));
+                    readDependencies(cls), readDetails(cls),
+                    done, outOfScope, verificationTarget);
 
             var item = new TreeItem<>(info);
             item.setExpanded(true);
@@ -185,7 +193,8 @@ public final class GraphTreeBuilder {
                 var updated = new NodeInfo(
                         info.name(), info.fullName(), info.specLevel(),
                         info.piece(), info.loadBearing(), derived,
-                        info.dependencies(), info.details());
+                        info.dependencies(), info.details(),
+                        info.done(), info.outOfScope(), info.verificationTarget());
                 item.setValue(updated);
             }
         }

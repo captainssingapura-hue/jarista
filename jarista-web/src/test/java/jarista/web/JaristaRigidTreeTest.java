@@ -1,5 +1,6 @@
 package jarista.web;
 
+import hue.captains.singapura.js.homing.studio.base.composed.MarkdownSegment;
 import hue.captains.singapura.js.homing.studio.base.composed.graph.RigidNode;
 import org.junit.jupiter.api.Test;
 
@@ -60,6 +61,20 @@ class JaristaRigidTreeTest {
         assertNotNull(JaristaRigidTree.INSTANCE.toDocTreeV2());
         assertEquals("Jarista Feature Graph", JaristaRigidTree.INSTANCE.title());
         assertFalse(JaristaRigidTree.INSTANCE.contents().isBlank());
+    }
+
+    @Test
+    void pieceBodiesShowDoneState() {
+        var piece = JaristaRigidTree.nodes().stream()
+                .filter(n -> n.source().piece())
+                .findFirst().orElseThrow();
+        var atAGlance = (MarkdownSegment) JaristaRigidTree.contentFor(piece.source()).segments().getFirst();
+        assertTrue(atAGlance.body().contains("**Done:**"), "piece body states done/open");
+        assertTrue(atAGlance.body().contains("**Verify:**"), "piece body states how to verify");
+        assertTrue(piece.source().badge().endsWith("DONE") || piece.source().badge().endsWith("OPEN"));
+
+        var spec = JaristaRigidTree.nodes().getFirst().source();   // the vision
+        assertFalse(spec.meta().contains("**Done:**"), "specs carry no piece state");
     }
 
     @Test
