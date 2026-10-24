@@ -408,6 +408,8 @@ public class GraphApp extends Application {
             case DONE        -> GREEN;
             case IN_PROGRESS -> PEACH;
             case PLANNED     -> MUTED;
+            case PARKED      -> MUTED;   // shelved: same quiet dot as planned
+            case ABANDONED   -> RED;     // dropped: the one status that should jump out
         };
     }
 

@@ -10,7 +10,9 @@ package jarista.spec;
  * living organism with perpetual room for improvement.
  *
  * <p>No default — if you declare yourself load-bearing, you
- * must say where you stand.
+ * must say where you stand. That includes work set aside:
+ * {@link SpecStatus#PARKED} or {@link SpecStatus#ABANDONED}
+ * rather than a PLANNED that nobody intends to pick up.
  */
 public interface LoadBearing {
 

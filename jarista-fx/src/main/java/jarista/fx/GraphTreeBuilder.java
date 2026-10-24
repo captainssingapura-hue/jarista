@@ -208,9 +208,24 @@ public final class GraphTreeBuilder {
         var leafStatuses = new ArrayList<SpecStatus>();
         collectLeafStatuses(item, leafStatuses);
         if (leafStatuses.isEmpty()) return null;
+        return derive(leafStatuses);
+    }
 
-        boolean allDone = leafStatuses.stream().allMatch(s -> s == SpecStatus.DONE);
-        boolean anyActive = leafStatuses.stream().anyMatch(s -> s != SpecStatus.PLANNED);
+    /**
+     * Rolls leaf statuses up to one organizational status. PARKED and ABANDONED
+     * leaves are left out of the roll-up — shelved work must not make a parent
+     * look active or hold a parent back from DONE. Only when every leaf is
+     * inactive does the parent inherit: PARKED if anything is still parked,
+     * else ABANDONED.
+     */
+    static SpecStatus derive(List<SpecStatus> leafStatuses) {
+        var live = leafStatuses.stream().filter(SpecStatus::active).toList();
+        if (live.isEmpty()) {
+            return leafStatuses.contains(SpecStatus.PARKED) ? SpecStatus.PARKED : SpecStatus.ABANDONED;
+        }
+
+        boolean allDone = live.stream().allMatch(s -> s == SpecStatus.DONE);
+        boolean anyActive = live.stream().anyMatch(s -> s != SpecStatus.PLANNED);
 
         if (allDone) return SpecStatus.DONE;
         if (anyActive) return SpecStatus.IN_PROGRESS;

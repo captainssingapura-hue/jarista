@@ -155,10 +155,11 @@ public class CoreADTs implements L2_Spec<NotationGoal> {
 }
 ```
 
-Derivation rule:
-- All descendant leaves DONE -> DONE
-- Any descendant not PLANNED -> IN_PROGRESS
+Derivation rule (PARKED and ABANDONED leaves are ignored):
+- All remaining leaves DONE -> DONE
+- Any remaining leaf not PLANNED -> IN_PROGRESS
 - Otherwise -> PLANNED
+- No remaining leaves at all -> PARKED if any leaf is PARKED, else ABANDONED
 
 ### Rules the validator enforces
 
@@ -248,8 +249,19 @@ Neither rots in a wiki.
 ## SpecStatus and the Living Organism
 
 ```java
-public enum SpecStatus { PLANNED, IN_PROGRESS, DONE }
+public enum SpecStatus { PLANNED, IN_PROGRESS, DONE, PARKED, ABANDONED }
 ```
+
+The first three are the lifecycle. The last two exist so that "not now" and
+"not ever" don't have to hide behind PLANNED:
+
+- **PARKED** — still wanted, deliberately not being worked on. Say why in a
+  RATIONALE detail. Un-park by moving back to PLANNED.
+- **ABANDONED** — no longer wanted. The spec stays in the graph as a record of
+  the decision, so the question doesn't get re-asked. Say why.
+
+Neither counts toward a parent's derived status, and neither may have a
+`done()=true` piece beneath it — the validator treats both as "not DONE".
 
 DONE does not mean "finished forever." Software is a living organism.
 Even a DONE spec may grow new sub-features later — at which point it
@@ -429,7 +441,7 @@ When an AI agent builds or maintains a Jarista graph:
 
 ### Maintaining an existing graph
 
-1. **Don't change status without reason.** PLANNED -> IN_PROGRESS when work begins. IN_PROGRESS -> DONE when the work ships. Never backslide without explanation.
+1. **Don't change status without reason.** PLANNED -> IN_PROGRESS when work begins. IN_PROGRESS -> DONE when the work ships. Never backslide without explanation. If work stops, say so: PARKED (will resume) or ABANDONED (won't), with a RATIONALE detail — never leave it IN_PROGRESS to look busy.
 2. **Promote leaves to organizational when they grow.** If you add child specs under an L3, remove its LoadBearing. It's now a branch, not a leaf.
 3. **Keep test counts current.** Node counts in tests must match reality. Update after every addition.
 4. **Details are living content.** Update them as understanding deepens. A DONE spec with stale details is worse than a PLANNED spec with no details.
